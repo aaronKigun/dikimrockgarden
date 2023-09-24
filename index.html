@@ -20,12 +20,12 @@
 
       <nav class="navbar">
          <a href="#home">HOME</a>
-         <a href="#about">ABOUT US</a>
          <a href="#room">LODGING</a>
          <a href="#gallery">CUISINE</a>
-         <a href="#review">LOUNGE</a>
+         <a href="#review">VIP LOUNGE</a>
          <a href="#faq">GARDEN/HALL</a>
          <a href="#faq">BAR</a>
+         <a href="#faq">CONTACT US</a>
       </nav>
 
       <div id="menu-btn" class="fas fa-bars"></div>
@@ -181,6 +181,25 @@
                   <a href="#" class="btn">book now</a>
                </div>
             </div>
+
+            <div class="swiper-slide slide">
+               <div class="image">
+                  <span class="price">#50,000/night</span>
+                  <img src="images/gallery1.jpg" alt="">
+               </div>
+               <div class="content">
+                  <h3>Semi-Executive Suite</h3>
+                  <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente nisi.</p>
+                  <div class="stars">
+                     <i class="fas fa-star"></i>
+                     <i class="fas fa-star"></i>
+                     <i class="fas fa-star"></i>
+                     <i class="fas fa-star"></i>
+                     <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <a href="#" class="btn">book now</a>
+               </div>
+            </div>
          </div>
 
          <div class="swiper-pagination"></div>
@@ -198,33 +217,33 @@
       <div class="box-container">
 
          <div class="box">
-            <img src="images/service1.png" alt="">
-            <h3>swimming pool</h3>
+            <i class="fa-solid fa-bed"></i>
+            <h3>Accomodation</h3>
          </div>
 
          <div class="box">
-            <img src="images/service2.png" alt="">
-            <h3>food & drink</h3>
+            <i class="fa-solid fa-utensils"></i>
+            <h3>Food</h3>
          </div>
 
          <div class="box">
-            <img src="images/service3.png" alt="">
-            <h3>restaurant</h3>
+            <i class="fa-solid fa-tree"></i>
+            <h3>Garden</h3>
          </div>
 
          <div class="box">
-            <img src="images/service4.png" alt="">
-            <h3>fitness</h3>
+            <i class="fa-solid fa-person-swimming"></i>
+            <h3>Swimming Pool</h3>
          </div>
 
          <div class="box">
-            <img src="images/service5.png" alt="">
-            <h3>beauty spa</h3>
+            <i class="fa-solid fa-couch"></i>
+            <h3>Vip Lounge</h3>
          </div>
 
          <div class="box">
-            <img src="images/service6.png" alt="">
-            <h3>resort beach</h3>
+            <i class="fa-solid fa-martini-glass-citrus"></i>
+            <h3>Bar</h3>
          </div>
 
       </div>
@@ -328,87 +347,18 @@
 
    <!-- reservation -->
 
-   <section class="reservation" id="reservation">
-
-      <h1 class="heading">book now</h1>
-
-      <form action="">
-
-         <div class="container">
-
-            <div class="box">
-               <p>name <span>*</span></p>
-               <input type="text" class="input" placeholder="Your Name">
-            </div>
-
-            <div class="box">
-               <p>email <span>*</span></p>
-               <input type="text" class="input" placeholder="Your Email">
-            </div>
-
-            <div class="box">
-               <p>check in <span>*</span></p>
-               <input type="date" class="input">
-            </div>
-
-            <div class="box">
-               <p>check out <span>*</span></p>
-               <input type="date" class="input">
-            </div>
-
-            <div class="box">
-               <p>adults <span>*</span></p>
-               <select name="adults" class="input">
-                  <option value="1">1 adult</option>
-                  <option value="2">2 adults</option>
-                  <option value="3">3 adults</option>
-                  <option value="4">4 adults</option>
-                  <option value="5">5 adults</option>
-                  <option value="6">6 adults</option>
-               </select>
-            </div>
-
-            <div class="box">
-               <p>children<span>*</span></p>
-               <select name="child" class="input">
-                  <option value="1">1 child</option>
-                  <option value="2">2 children</option>
-                  <option value="3">3 children</option>
-                  <option value="4">4 children</option>
-                  <option value="5">5 children</option>
-                  <option value="6">6 children</option>
-               </select>
-            </div>
-
-            <div class="box">
-               <p>rooms <span>*</span></p>
-               <select name="rooms" class="input">
-                  <option value="1">1 room</option>
-                  <option value="2">2 rooms</option>
-                  <option value="3">3 rooms</option>
-                  <option value="4">4 rooms</option>
-                  <option value="5">5 rooms</option>
-                  <option value="6">6 rooms</option>
-               </select>
-            </div>
-
-            <div class="box">
-               <p>room type <span>*</span></p>
-               <select name="type" class="input">
-                  <option value="1">Small rooms</option>
-                  <option value="2">Family rooms</option>
-                  <option value="3">Exclusive suite</option>
-                  <option value="4">Executive suite</option>
-               </select>
-            </div>
-   
-         </div>
-
-         <input type="submit" value="check availability" class="btn">
-
-      </form>
-
-   </section>
+   <!-- <section class="reservation" id="reservation">
+      <div class="room-checker">
+         <h2>Room Availability Checker</h2>
+         <label for="room1">Room 1:</label>
+         <input type="checkbox" id="room1" checked>
+         <label for="room2">Room 2:</label>
+         <input type="checkbox" id="room2" checked>
+         <label for="room3">Room 3:</label>
+         <input type="checkbox" id="room3" checked>
+         <div id="availability"></div>
+       </div>
+   </section> -->
 
    <!-- end -->
 
@@ -421,7 +371,7 @@
       <div class="row">
 
          <div class="image">
-            <img src="images/Faq.png" alt="">
+            <img src="images/Faq.png" alt="" class="bounce">
          </div>
 
          <div class="content">
@@ -451,31 +401,31 @@
 
          <div class="box">
             <h3>Contact Us</h3>
-            <a href="#"> <i class="fas fa-phone"></i> +2347014887392</a>
-            <a href="#"> <i class="fas fa-phone"></i> +2348033457628</a>
-            <a href="#"> <i class="fas fa-envelope"></i>dikimrockgarden@gmail.com</a>
-            <a href="#"> <i class="fas fa-map"></i>Jos , Plateau State</a>
+            <a href="#"><i class="fa-solid fa-mobile"></i>+2349039284897</a>
+               <p>OR</p>
+            <a href="#"><i class="fa-solid fa-mobile"></i>+2347051555529</a>
+            <a href="#"><i class="fa-solid fa-paper-plane"></i>dikimrockgarden@gmail.com</a>
+            <a href="#"><i class="fa-solid fa-location-crosshairs"></i>Mountain Green Street, Jos, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Plateau State, Nigeria</a>
          </div>
 
          <div class="box">
             <h3>Links</h3>
-            <a href="#"> <i class="fas fa-arrow-right"></i> Home</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> About Us</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> Lodging</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> Cuisine</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i>Lounge</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i>Garden</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i>Bar</a>
+            <a href="#">Home</a>
+            <a href="#">Lodging</a>
+            <a href="#"></i> Cuisine</a>
+            <a href="#"></i>Lounge</a>
+            <a href="#"></i>Garden</a>
+            <a href="#">Bar</a>
          </div>
 
          <div class="box">
             <h3>Resources</h3>
-            <a href="#"> <i class="fas fa-arrow-right"></i>Privacy Policy</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i> Refund policy</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i>Faqs</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i>Terms of Service</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i>Contact Us</a>
-            <a href="#"> <i class="fas fa-arrow-right"></i>Help Center</a>
+            <a href="#"></i>Privacy Policy</a>
+            <a href="#"></i> Refund policy</a>
+            <a href="#"></i>Faqs</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+            <a href="#"> Help Center</a>
          </div>
 
       </div>

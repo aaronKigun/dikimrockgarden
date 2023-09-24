@@ -43,7 +43,7 @@ var swiper = new Swiper(".room-slider", {
             slidesPerView: 1,
         },
         768: {
-            slidesPerView: 2,
+            slidesPerView: 3,
         },
         991: {
             slidesPerView: 3,
@@ -100,3 +100,29 @@ accordions.forEach(acco =>{
         acco.classList.add('active');
     }
 })
+
+
+// const room1Checkbox = document.getElementById('room1');
+// const room2Checkbox = document.getElementById('room2');
+// const room3Checkbox = document.getElementById('room3');
+// const availabilityDiv = document.getElementById('availability');
+
+// function checkAvailability() {
+//   const room1Available = room1Checkbox.checked ? 'Room 1 is available' : 'Room 1 is not available';
+//   const room2Available = room2Checkbox.checked ? 'Room 2 is available' : 'Room 2 is not available';
+//   const room3Available = room3Checkbox.checked ? 'Room 3 is available' : 'Room 3 is not available';
+
+//   availabilityDiv.innerHTML = `
+//     <p>${room1Available}</p>
+//     <p>${room2Available}</p>
+//     <p>${room3Available}</p>
+//   `;
+// }
+
+// // Listen for checkbox changes
+// room1Checkbox.addEventListener('change', checkAvailability);
+// room2Checkbox.addEventListener('change', checkAvailability);
+// room3Checkbox.addEventListener('change', checkAvailability);
+
+// // Initial availability check
+// checkAvailability();
