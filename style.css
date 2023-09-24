@@ -14,7 +14,7 @@
     box-sizing: border-box;
     outline: none; border: none;
     text-decoration: none;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     transition: .2s linear;
 }
 
@@ -226,6 +226,8 @@ section{
 
 .about .row .image img{
     width: 100%;
+    height: auto;
+    border-radius: 50px;
 }
 
 .about .row .content{
