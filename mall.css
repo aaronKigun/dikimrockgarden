@@ -1,0 +1,35 @@
+.picture-grid{
+    margin-top: 50px;
+}
+.picture-grid h1 {
+    font-size: 3rem;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    color: green;
+    text-align: center;
+  }
+  
+  .grid-container {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+  
+  .grid-item {
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .grid-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  
+  .grid-item img:hover {
+    transform: scale(1.05);
+  }

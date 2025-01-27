@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f9f9f9;
+          color: #333;
+      }
+      .contain {
+          max-width: 2000px;
+          margin: 0 auto;
+          padding: 20px;
+          display: flex;
+          justify-content: space-around;
+      }
+      h1 {
+          text-align: center;
+          color: #2c3e50;
+      }
+      .contact-info {
+          margin-bottom: 30px;
+      }
+      .contact-info p {
+          margin: 10px 0;
+          font-size: 16px;
+      }
+      .contact-info a {
+          color: #3498db;
+          text-decoration: none;
+      }
+      .contact-info a:hover {
+          text-decoration: underline;
+      }
+
+.share{
+    padding-top: 2rem;
+    text-align: center;
+    margin-bottom: 50px;
+   }
+
+    .share a{
+    color:  green;
+    font-size: 2rem;
+    width: 5rem;
+    height: 5rem;
+    line-height: 5rem;
+    border-radius: 50%;
+    margin: .3rem;
+    }
+
+   .share a:hover{
+    color: white;
+    background: black;
+    transform: rotate(360deg);
+   }
+      form {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          width: 500px;
+          height:auto;
+      }
+      form label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+          font-size: 17px;
+      }
+      form input, form textarea {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 14px;
+      }
+      form button {
+          background-color: green;
+          color: white;
+          padding: 10px 15px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+      }
+      form button:hover {
+          background-color: lightgreen;
+      }
+      .open-hours {
+  background-color: #eee;
+  color: black;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.open-hours h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: green;
+}
+
+.open-hours ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.open-hours ul li {
+  font-size: 1.6rem;
+  margin: 10px 0;
+  padding: 10px;
+  border-bottom: 1px solid lightgreen;
+}
+
+.open-hours ul li span {
+  font-weight: bold;
+  font-size: 20px;
+  color:lightgreen;
+}
+
+      @media (max-width: 768px) {
+            .contain {
+                padding: 10px;
+            }
+            .contact-info p {
+                font-size: 14px;
+            }
+            .social-links a {
+                font-size: 18px;
+            }
+            form input, form textarea {
+                font-size: 13px;
+            }
+            form button {
+                font-size: 14px;
+            }
+            .open-hours h2 {
+               font-size: 2rem;
+            }
+
+            .open-hours ul li {
+               font-size: 1rem;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+            .contact-info p {
+                font-size: 12px;
+            }
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            .social-links a {
+                font-size: 16px;
+            }
+        }
+  </style>
+</head>
+<body>
+    <header class="header">
+
+        <a href="#" class="logo"><img src="images/Reallogo.jpg"></a>
+  
+        <nav class="navbar">
+           <a href="/">HOME</a>
+           <!-- <a href="#room">LODGING</a> -->
+           <a href="cuisine.html">CUISINE</a>
+           <a href="vlb.html">VIP LOUNGE/BAR</a>
+           <a href="gh.html">GARDEN/HALL</a>
+           <a href="mall.html">BOUTIQUE</a>
+           <!-- <a href="contact.html">CONTACT US</a> -->
+        </nav>
+  
+        <div id="menu-btn" class="fas fa-bars"></div>
+  
+     </header>
+    <section class="about" id="about">
+
+        <div class="row">
+  
+           <div class="image">
+              <img src="images/home.jpg" alt="">
+           </div>
+  
+           <div class="content">
+              <h3>CONTACT US</h3>
+             <p>We’d love to hear from you! Have questions or feedback? Interested in booking a room or placing a food order? Reach out to us anytime. We are here to assist you and make your experience exceptional.</p>
+           </div>
+  
+        </div>
+  
+     </section>
+     <section class="open-hours">
+      <div class="hours">
+        <h2>Open Hours</h2>
+        <ul>
+          <li><span>Monday:</span> 8:00 AM - 11:30 PM</li>
+          <li><span>Tuesday:</span> 8:00 AM - 11:30 PM</li>
+          <li><span>Wednesday:</span> 8:00 AM - 11:30 PM</li>
+          <li><span>Thursday:</span> 8:00 AM - 11:30 PM</li>
+          <li><span>Friday:</span> 8:00 AM - 11:30 PM</li>
+          <li><span>Saturday:</span> 8:00 AM - 11:30 PM</li>
+          <li><span>Sunday:</span> 8:00 AM - 11:30 PM</li>
+        </ul>
+      </div>
+    </section>
+     <div class="contain">
+
+      <div class="contact-info">
+          <p><strong>Visit Us:</strong> Mountain Green Street, Hwolshe, Jos, Plateau State, Nigeria</p>
+          <p><strong>Call Us:</strong> +2349039284897</p>
+          <p><strong>Email Us:</strong>&nbsp;dikimrockgarden@gmail.com</p>
+
+          <div class="share">
+            <a href="#" class="fab fa-facebook-f"></a>
+            <a href="#" class="fab fa-instagram"></a>
+            <a href="#" class="fab fa-twitter"></a>
+            <a href="#" class="fab fa-whatsapp"></a>
+         </div>
+         <h2>Send Us a Message</h2>
+         <p>Have a specific inquiry? Fill out the form below, and we’ll get back to you as soon as possible.</p>
+         <form id="contactForm" action="/submit" method="post">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+  
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+  
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject">
+  
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+  
+            <button type="submit">Send Message</button>
+        </form>
+      </div>
+      <div class="image">
+         <img src="images/contacts.gif" alt="" >
+      </div>
+  </div>
+     <section class="footer">
+
+      <div class="box-container">
+
+         <div class="box">
+            <h3>Contact Us</h3>
+            <a href="#"><i class="fa-solid fa-mobile"></i>+2349039284897</a>
+               <p>OR</p>
+            <a href="#"><i class="fa-solid fa-mobile"></i>+2347051555529</a>
+            <a href="#"><i class="fa-solid fa-paper-plane"></i>dikimrockgarden@gmail.com</a>
+            <a href="#"><i class="fa-solid fa-location-crosshairs"></i>Mountain Green Street, Jos, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Plateau State, Nigeria</a>
+         </div>
+
+         <div class="box">
+            <h3>Links</h3>
+            <a href="#">Home</a>
+            <a href="#">Lodging</a>
+            <a href="#"></i> Cuisine</a>
+            <a href="#"></i>Lounge</a>
+            <a href="#"></i>Garden</a>
+            <a href="#">Bar</a>
+         </div>
+
+         <div class="box">
+            <h3>Resources</h3>
+            <a href="#"></i>Privacy Policy</a>
+            <a href="#"></i> Refund policy</a>
+            <a href="#"></i>Faqs</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+            <a href="#"> Help Center</a>
+         </div>
+
+      </div>
+
+      <div class="share">
+         <a href="#" class="fab fa-facebook-f"></a>
+         <a href="#" class="fab fa-instagram"></a>
+         <a href="#" class="fab fa-twitter"></a>
+         <a href="#" class="fab fa-whatsapp"></a>
+      </div>
+
+      <div class="credit"><div>&copy;copyright 2025 Dikim Rock Garden</div> <div>Built by <span>HASOTECHNOLOGIE</div></span></div>
+      <div class="down">All Rights Reserved</div>
+   </section>
+
+
+     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+     <script src="https://apis.google.com/js/api.js"></script>
+
+
+     <script>
+      // Load Gmail API and authenticate
+      const CLIENT_ID = '531082634688-2773dtp7611gl2hr9q5v0n16ptflba2f.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyC-I645-KEbpW_DNbOKxncVLIYydfMNLkA';
+const SCOPES = 'https://www.googleapis.com/auth/gmail.send';
+
+function loadGmailApi() {
+  gapi.load('client:auth2', () => {
+    gapi.client.init({
+      apiKey: API_KEY,
+      clientId: CLIENT_ID,
+      discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest'],
+      scope: SCOPES,
+    }).then(() => {
+      console.log('Gmail API loaded.');
+    }).catch(error => {
+      console.error('Error loading Gmail API:', error);
+    });
+  });
+}
+
+function sendEmail(name, email, subject, message) {
+  const formattedMessage = `
+From: ${email}
+To: dikimrockgarden@gmail.com
+Subject: ${subject || 'No Subject'}
+
+Name: ${name}
+Message: ${message}
+`;
+  const encodedMessage = btoa(formattedMessage)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+
+  gapi.client.gmail.users.messages
+    .send({
+      userId: 'me',
+      resource: {
+        raw: encodedMessage,
+      },
+    })
+    .then(() => {
+      alert('Email sent successfully!');
+      document.getElementById('contactForm').reset();
+    })
+    .catch(error => {
+      console.error('Error sending email:', error);
+      alert('Failed to send the email. Please try again later.');
+    });
+}
+
+document.getElementById('contactForm').addEventListener('submit', function (event) {
+  event.preventDefault(); // Prevent normal form submission
+
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const subject = document.getElementById('subject').value.trim();
+  const message = document.getElementById('message').value.trim();
+
+  if (!name || !email || !message) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+
+  if (!validateEmail(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  sendEmail(name, email, subject, message);
+});
+
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// Load the Gmail API when the page is ready
+document.addEventListener('DOMContentLoaded', loadGmailApi);
+
+  </script>
+
+</body>
+</html>
