@@ -33,3 +33,11 @@
   .grid-item img:hover {
     transform: scale(1.05);
   }
+  .token{
+    text-align: center;
+    display: block;
+    font-size: 17px;
+    margin-bottom: 20px;
+    font-family: cursive;
+    font-weight: bold;
+  }
