@@ -1,32 +1,60 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
-    font-size: larger;
-}
 .payform {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
+    max-width: 48rem;
+    width: 90%;
+    margin: 13rem auto 5rem;
+    padding: 3rem 2.5rem;
     background: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    margin-top: 150px;
+    box-shadow: 0 .5rem 2rem rgba(0, 0, 0, 0.12);
+    border-radius: 1rem;
 }
 
-input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.payform h2 {
+    font-size: 2.4rem;
+    color: #1a7a1a;
+    text-align: center;
+    margin-bottom: 2rem;
 }
-button {
-    background-color: #28a745;
+
+.payform input,
+.payform select,
+.payform button {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    margin: .8rem 0;
+    border: 1px solid #ccc;
+    border-radius: .5rem;
+    font-size: 1.6rem;
+    font-family: inherit;
+}
+
+.payform input:focus,
+.payform select:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+.payform button {
+    background-color: #1a7a1a;
     color: white;
     border: none;
     cursor: pointer;
+    font-weight: 600;
+    letter-spacing: .5px;
+    margin-top: 1.5rem;
+    transition: background .2s ease;
 }
-button:hover {
-    background-color: #218838;
+
+.payform button:hover {
+    background-color: #4caf50;
+}
+
+@media (max-width: 576px) {
+    .payform {
+        margin-top: 10rem;
+        padding: 2rem 1.5rem;
+    }
+
+    .payform h2 {
+        font-size: 2rem;
+    }
 }

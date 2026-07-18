@@ -4,8 +4,8 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="description" content="Cuisine at Dikim Rock Garden - Enjoy local favorites and mouthwatering Continental Dishes in Jos, Plateau State, Nigeria.">
-   <title>Cuisine - Dikim Rock Garden</title>
+   <meta name="description" content="Club & Karaoke at Dikim Rock Garden - Unleash the night with premium sound, high-energy vibes, and private karaoke rooms in Jos, Nigeria.">
+   <title>Club &amp; Karaoke - Dikim Rock Garden</title>
    <link rel="icon" href="images/Reallogo.jpg" type="image/jpg">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
@@ -21,10 +21,10 @@
 
       <nav class="navbar">
          <a href="/">HOME</a>
-         <a href="cuisine.html" class="active">CUISINE</a>
+         <a href="cuisine.html">CUISINE</a>
          <a href="vlb.html">VIP LOUNGE/BAR</a>
          <a href="gh.html">GARDEN/HALL</a>
-         <a href="club.html">CLUB/KARAOKE</a>
+         <a href="club.html" class="active">CLUB/KARAOKE</a>
          <a href="mall.html">BOUTIQUE</a>
          <a href="contact.html">CONTACT US</a>
       </nav>
@@ -35,25 +35,52 @@
 
    <!-- end -->
 
-   <!-- about section -->
+   <!-- hero section -->
+   <section class="home" id="home">
+      <div class="swiper home-slider">
+         <div class="swiper-wrapper">
+            <div class="swiper-slide slide" style="background: url(images/water.jpg) no-repeat; background-position: center; background-size: cover;">
+               <div class="content">
+                  <div class="hero-pill">Ultimate Entertainment</div>
+                  <h3>Nightclub &amp; Karaoke</h3>
+                  <p>Unleash the night with high-energy beats, premium lighting, and private karaoke rooms designed for unforgettable memories.</p>
+                  <div class="hero-btns">
+                     <a href="contact.html" class="btn btn-primary">Book A Lounge</a>
+                     <a href="#club-details" class="btn btn-outline">Explore Nightlife</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- end -->
 
-   <section class="about" id="about">
+   <!-- content section -->
 
-      <div class="row" data-reveal="fade">
-
+   <section class="about" id="club-details" style="margin-top: 5rem;">
+      <div class="row" data-reveal="left">
          <div class="image">
-            <img src="images/stick meat.jpg" alt="Stick Meat Cuisine">
+            <img src="images/lounge2.jpg" alt="Nightclub Lounge">
          </div>
-
          <div class="content">
-            <div class="section-eyebrow">Our Menu</div>
-            <h3>Exquisite &amp; Fine Dining</h3>
-            <p>Indulge in a variety of delicious flavors with our Cuisine, featuring a mix of local favorites and mouthwatering Continental Dishes. Whether you're in the mood for a hearty meal, delicious appetizers, or eager to try something new, our menu has something to satisfy every taste.</p>
-            <a href="contact.html" class="btn btn-primary">Book A Table</a>
+            <div class="section-eyebrow">The Nightclub</div>
+            <h3>Intoxicating Beats &amp; Premium Energy</h3>
+            <p>Step into the ultimate party destination in Jos. Our nightclub features state-of-the-art sound systems, captivating laser shows, and guest DJs spinning the hottest tracks. Enjoy our premium bar services and high-energy dance floor designed to keep you grooving all night long.</p>
+            <a href="contact.html" class="btn">VIP Reservations</a>
          </div>
-
       </div>
 
+      <div class="row reverse" style="margin-top: 8rem;" data-reveal="right">
+         <div class="image">
+            <img src="images/viplounge.jpg" alt="Karaoke Lounge">
+         </div>
+         <div class="content">
+            <div class="section-eyebrow">Karaoke Lounge</div>
+            <h3>Sing Your Heart Out</h3>
+            <p>Gather your friends and family for an intimate and fun musical experience. Our private karaoke rooms are equipped with top-tier microphones, an extensive multi-genre song catalog, and personal bar service. Whether you're a professional singer or just looking to have fun, we have the perfect stage for you.</p>
+            <a href="contact.html" class="btn btn-green-outline">Book Private Room</a>
+         </div>
+      </div>
    </section>
 
    <!-- end -->

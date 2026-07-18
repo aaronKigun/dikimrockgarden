@@ -4,10 +4,10 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="Dikim Rock Garden - A unique destination combining natural beauty, relaxation, and entertainment. Garden, VIP Lounge, Bar, Club, Karaoke, Restaurant, and Lodging in Jos, Nigeria.">
    <title>Dikim Rock Garden</title>
    <link rel="icon" href="images/Reallogo.jpg" type="image/jpg">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
    <link rel="stylesheet" href="style.css">
 </head>
@@ -17,14 +17,14 @@
 
    <header class="header">
 
-      <a href="#" class="logo"><img src="images/Reallogo.jpg"></a>
+      <a href="/" class="logo"><img src="images/Reallogo.jpg" alt="Dikim Rock Garden Logo"></a>
 
       <nav class="navbar">
-         <a href="/">HOME</a>
-         <!-- <a href="#room">LODGING</a> -->
-         <a href="/cuisine.html">CUISINE</a>
+         <a href="/" class="active">HOME</a>
+         <a href="cuisine.html">CUISINE</a>
          <a href="vlb.html">VIP LOUNGE/BAR</a>
          <a href="gh.html">GARDEN/HALL</a>
+         <a href="club.html">CLUB/KARAOKE</a>
          <a href="mall.html">BOUTIQUE</a>
          <a href="contact.html">CONTACT US</a>
       </nav>
@@ -45,28 +45,44 @@
 
             <div class="swiper-slide slide" style="background: url(images/h1.jpg) no-repeat;">
                <div class="content">
-                  <h3>A Feel of Nature</h3>
-                  <a href="#" class="btn"> See More </a>
+                  <div class="hero-pill">A Feel of Nature</div>
+                  <h3>Unwind In Serenity</h3>
+                  <p>Welcome to a sanctuary where luxury meets natural elegance. Discover our premium gardens, luxury lodging, and premier dining.</p>
+                  <div class="hero-btns">
+                     <a href="#about" class="btn btn-primary">Discover More</a>
+                     <a href="contact.html" class="btn btn-outline">Contact Us</a>
+                  </div>
                </div>
             </div>
 
             <div class="swiper-slide slide" style="background: url(images/g1.jpg) no-repeat;">
                <div class="content">
-                  <!-- <h3>it's where dreams come true</h3> -->
-                  <a href="#" class="btn"> See More</a>
+                  <div class="hero-pill">Lush &amp; Vibrant Gardens</div>
+                  <h3>Beautiful Outdoor Venues</h3>
+                  <p>Host your events or simply relax in our beautifully manicured green lawns and botanical gardens.</p>
+                  <div class="hero-btns">
+                     <a href="gh.html" class="btn btn-primary">Our Garden &amp; Hall</a>
+                     <a href="/paymentform.html" class="btn btn-outline">Book Now</a>
+                  </div>
                </div>
             </div>
 
             <div class="swiper-slide slide" style="background: url(images/corridor.jpg) no-repeat;">
                <div class="content">
-                  <!-- <h3>it's where dreams come true</h3> -->
-                  <a href="#" class="btn">See More</a>
+                  <div class="hero-pill">Exquisite Spaces</div>
+                  <h3>Intoxicating Lodging &amp; Lounge</h3>
+                  <p>Experience lodging with maximum privacy and premium hospitality services in the heart of Jos.</p>
+                  <div class="hero-btns">
+                     <a href="#room" class="btn btn-primary">View Rooms</a>
+                     <a href="vlb.html" class="btn btn-outline">VIP Lounge</a>
+                  </div>
                </div>
             </div>
          </div>
 
          <div class="swiper-button-next"></div>
          <div class="swiper-button-prev"></div>
+         <div class="swiper-pagination"></div>
 
       </div>
 
@@ -79,15 +95,17 @@
 
    <section class="about" id="about">
 
-      <div class="row">
+      <div class="row" data-reveal="left">
 
          <div class="image">
-            <img src="images/reception.jpg" alt="">
+            <img src="images/reception.jpg" alt="Dikim Rock Garden Reception">
          </div>
 
-         <div class="content">
-            <h3>ABOUT US</h3>
-           <p>Welcome to Dikim Rock Garden, a unique destination that combines natural beauty, relaxation, and entertainment all in one place. Our property features a stunning garden, a fully stocked bar, a VIP lounge, comfortable lodging options, a restaurant with delicious cuisine, and even rental services for halls.</p>
+         <div class="content" data-reveal="right" data-delay="200">
+            <div class="section-eyebrow">About Us</div>
+            <h3>Nature, Luxury &amp; Entertainment</h3>
+            <p>Welcome to Dikim Rock Garden, a premium destination that beautifully merges the charm of nature with modern luxury, relaxation, and high-energy entertainment. Our property offers a stunning garden oasis, a fully stocked premium bar, a VIP lounge, private club and karaoke, comfortable lodging suites, an exquisite restaurant with international and local cuisines, and event halls for rent.</p>
+            <a href="contact.html" class="btn">Get in touch</a>
          </div>
 
       </div>
@@ -100,20 +118,20 @@
 
    <section class="room" id="room">
 
-      <h1 class="heading">OUR ROOMS</h1>
+      <div class="section-eyebrow" style="display: flex; justify-content: center; margin-bottom: 1rem;">Our Lodging</div>
+      <h1 class="heading">LUXURIOUS SUITES</h1>
+      <p class="sub-heading">Escape the daily rush and relax in our beautifully designed rooms, tailored to offer maximum comfort and absolute privacy.</p>
 
-      <div class="swiper room-slider">
+      <div class="swiper room-slider" data-reveal="fade">
 
          <div class="swiper-wrapper">
 
             <div class="swiper-slide slide">
                <div class="image">
-                  <!-- <span class="price">#5,000/night</span> -->
-                  <img src="images/smallroom.jpg" alt="">
+                  <img src="images/smallroom.jpg" alt="Small Room">
                </div>
                <div class="content">
                   <h3>Small Room</h3>
-                  <!-- <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente nisi.</p> -->
                   <div class="stars">
                      <i class="fas fa-star"></i>
                      <i class="fas fa-star"></i>
@@ -127,12 +145,10 @@
 
             <div class="swiper-slide slide">
                <div class="image">
-                  <!-- <span class="price">#10,000/night</span> -->
-                  <img src="images/familyroom.jpg" alt="">
+                  <img src="images/familyroom.jpg" alt="Family Room">
                </div>
                <div class="content">
                   <h3>Family Room</h3>
-                  <!-- <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente nisi.</p> -->
                   <div class="stars">
                      <i class="fas fa-star"></i>
                      <i class="fas fa-star"></i>
@@ -140,18 +156,16 @@
                      <i class="fas fa-star"></i>
                      <i class="fas fa-star-half-alt"></i>
                   </div>
-                  <a href="/paymentform.html" class="btn"> Book Now</a>
+                  <a href="/paymentform.html" class="btn">Book Now</a>
                </div>
             </div>
 
             <div class="swiper-slide slide">
                <div class="image">
-                  <!-- <span class="price">#30,000/night</span> -->
-                  <img src="images/mediumroom.jpg" alt="">
+                  <img src="images/mediumroom.jpg" alt="Exclusive Suite">
                </div>
                <div class="content">
                   <h3>Exclusive Suite</h3>
-                  <!-- <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente nisi.</p> -->
                   <div class="stars">
                      <i class="fas fa-star"></i>
                      <i class="fas fa-star"></i>
@@ -165,12 +179,10 @@
 
             <div class="swiper-slide slide">
                <div class="image">
-                  <!-- <span class="price">#70,000/night</span> -->
-                  <img src="images/bigroom.jpg" alt="">
+                  <img src="images/bigroom.jpg" alt="Executive Suite">
                </div>
                <div class="content">
                   <h3>Executive Suite</h3>
-                  <!-- <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente nisi.</p> -->
                   <div class="stars">
                      <i class="fas fa-star"></i>
                      <i class="fas fa-star"></i>
@@ -184,12 +196,10 @@
 
             <div class="swiper-slide slide">
                <div class="image">
-                  <!-- <span class="price">#50,000/night</span> -->
-                  <img src="images/largeroom.jpg" alt="">
+                  <img src="images/largeroom.jpg" alt="Executive Suite II">
                </div>
                <div class="content">
                   <h3>Executive Suite II</h3>
-                  <!-- <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente nisi.</p> -->
                   <div class="stars">
                      <i class="fas fa-star"></i>
                      <i class="fas fa-star"></i>
@@ -213,36 +223,52 @@
 
    <section class="services">
 
-      <div class="box-container">
+      <div class="section-eyebrow" style="display: flex; justify-content: center; margin-bottom: 1rem;">Experience Dikim</div>
+      <h1 class="heading">PREMIUM AMENITIES</h1>
+      <p class="sub-heading">Every service we offer is curated to provide the ultimate blend of comfort, elegance, and captivating fun.</p>
+
+      <div class="box-container" data-reveal="fade">
 
          <div class="box">
-            <i class="fa-solid fa-bed"></i>
-            <h3>Accomodation</h3>
+            <div class="icon-wrap">
+               <i class="fa-solid fa-bed"></i>
+            </div>
+            <h3>Accommodation</h3>
          </div>
 
          <div class="box">
-            <i class="fa-solid fa-utensils"></i>
-            <h3>Food</h3>
+            <div class="icon-wrap">
+               <i class="fa-solid fa-utensils"></i>
+            </div>
+            <h3>Gourmet Food</h3>
          </div>
 
          <div class="box">
-            <i class="fa-solid fa-tree"></i>
-            <h3>Garden</h3>
+            <div class="icon-wrap">
+               <i class="fa-solid fa-tree"></i>
+            </div>
+            <h3>Scenic Garden</h3>
          </div>
 
          <div class="box">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <h3>Mall</h3>
+            <div class="icon-wrap">
+               <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <h3>Boutique</h3>
          </div>
 
          <div class="box">
-            <i class="fa-solid fa-couch"></i>
-            <h3>Vip Lounge</h3>
+            <div class="icon-wrap">
+               <i class="fa-solid fa-couch"></i>
+            </div>
+            <h3>VIP Lounge</h3>
          </div>
 
          <div class="box">
-            <i class="fa-solid fa-martini-glass-citrus"></i>
-            <h3>Bar</h3>
+            <div class="icon-wrap">
+               <i class="fa-solid fa-martini-glass-citrus"></i>
+            </div>
+            <h3>Bar &amp; Club</h3>
          </div>
 
       </div>
@@ -255,63 +281,65 @@
 
    <section class="gallery" id="gallery">
 
+      <div class="section-eyebrow" style="display: flex; justify-content: center; margin-bottom: 1rem;">Visual Tour</div>
       <h1 class="heading">OUR GALLERY</h1>
+      <p class="sub-heading">Browse through our beautifully captured moments of relaxation, nature, events, and style.</p>
 
-      <div class="swiper gallery-slider">
+      <div class="swiper gallery-slider" data-reveal="fade">
 
          <div class="swiper-wrapper">
 
             <div class="swiper-slide slide">
-               <img src="images/b02.jpg" alt="">
+               <img src="images/b02.jpg" alt="Boutique display">
                <div class="icon">
                   <i class="fas fa-magnifying-glass-plus"></i>
                </div>
             </div>
 
             <div class="swiper-slide slide">
-               <img src="images/fountain1.jpg" alt="">
+               <img src="images/fountain1.jpg" alt="Garden fountain">
                <div class="icon">
                   <i class="fas fa-magnifying-glass-plus"></i>
                </div>
             </div>
 
             <div class="swiper-slide slide">
-               <img src="images/g5.jpg" alt="">
+               <img src="images/g5.jpg" alt="Garden view">
                <div class="icon">
                   <i class="fas fa-magnifying-glass-plus"></i>
                </div>
             </div>
 
             <div class="swiper-slide slide">
-               <img src="images/g2.jpg" alt="">
+               <img src="images/g2.jpg" alt="Garden scenery">
                <div class="icon">
                   <i class="fas fa-magnifying-glass-plus"></i>
                </div>
             </div>
 
             <div class="swiper-slide slide">
-               <img src="images/fountain2.jpg" alt="">
+               <img src="images/fountain2.jpg" alt="Fountain">
                <div class="icon">
                   <i class="fas fa-magnifying-glass-plus"></i>
                </div>
             </div>
 
             <div class="swiper-slide slide">
-               <img src="images/b04.jpg" alt="">
+               <img src="images/b04.jpg" alt="Boutique items">
                <div class="icon">
                   <i class="fas fa-magnifying-glass-plus"></i>
                </div>
             </div>
 
             <div class="swiper-slide slide">
-               <img src="images/t2.jpg" alt="">
+               <img src="images/t2.jpg" alt="Dining area">
                <div class="icon">
                   <i class="fas fa-magnifying-glass-plus"></i>
                </div>
             </div>
 
             <div class="swiper-slide slide">
-               <img src="images/sideview.jpg" alt="">
+               <img src="images/sideview.jpg" alt="Side view">
                <div class="icon">
                   <i class="fas fa-magnifying-glass-plus"></i>
                </div>
@@ -327,69 +355,55 @@
    <!-- review -->
 
    <section class="review" id="review">
+      <div class="review-bg"></div>
 
-      <div class="swiper review-slider">
-         <div class="swiper-wrapper">
+      <div class="review-panel" data-reveal="left">
+         <div class="swiper review-slider">
+            <div class="swiper-wrapper">
 
-            <div class="swiper-slide slide">
-               <h2 class="heading">CLIENT'S REVIEW</h2>
-               <i class="fas fa-quote-right"></i>
-               <p>If you are looking for a nice place to relax, look no further than Dikim Rock Garden</p>
-               <div class="user">
-                  <img src="images/about.jpg" alt="">
-                  <div class="user-info">
-                     <h3>Aaron Kigun</h3>
-                     <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
+               <div class="swiper-slide slide">
+                  <span class="big-quote">“</span>
+                  <h2 class="heading">HEAR FROM OUR GUESTS</h2>
+                  <p>If you are looking for a nice place to relax, look no further than Dikim Rock Garden. The combination of nature, VIP service, and standard security is unmatched.</p>
+                  <div class="user">
+                     <img src="images/about.jpg" alt="Aaron Kigun">
+                     <div class="user-info">
+                        <h3>Aaron Kigun</h3>
+                        <div class="stars">
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star-half-alt"></i>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="swiper-slide slide">
+                  <span class="big-quote">“</span>
+                  <h2 class="heading">HEAR FROM OUR GUESTS</h2>
+                  <p>If you are looking for an intoxicating picnic spot or private club environment, check out Dikim Rock Garden. Beautiful lawns and amazing staff!</p>
+                  <div class="user">
+                     <img src="images/about.jpg" alt="Andrew Peter">
+                     <div class="user-info">
+                        <h3>Andrew Peter</h3>
+                        <div class="stars">
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star-half-alt"></i>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
-
-            <div class="swiper-slide slide">
-               <h2 class="heading">CLIENT'S REVIEW</h2>
-               <i class="fas fa-quote-right"></i>
-               <p>If you are looking for a nice picnic spot check out Dikim Rock Garden</p>
-               <div class="user">
-                  <img src="images/about.jpg" alt="">
-                  <div class="user-info">
-                     <h3>Andrew Peter</h3>
-                     <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                     </div>
-                  </div>
-               </div>
-            </div>
+            <div class="swiper-pagination"></div>
          </div>
-         <div class="swiper-pagination"></div>
       </div>
 
    </section>
-
-      <!-- end -->
-
-   <!-- reservation -->
-
-   <!-- <section class="reservation" id="reservation">
-      <div class="room-checker">
-         <h2>Room Availability Checker</h2>
-         <label for="room1">Room 1:</label>
-         <input type="checkbox" id="room1" checked>
-         <label for="room2">Room 2:</label>
-         <input type="checkbox" id="room2" checked>
-         <label for="room3">Room 3:</label>
-         <input type="checkbox" id="room3" checked>
-         <div id="availability"></div>
-       </div>
-   </section> -->
 
    <!-- end -->
 
@@ -397,24 +411,26 @@
 
    <section class="faqs" id="faq">
 
+      <div class="section-eyebrow" style="display: flex; justify-content: center; margin-bottom: 1rem;">Got Questions?</div>
       <h1 class="heading">FREQUENTLY ASKED QUESTIONS</h1>
+      <p class="sub-heading">Find quick answers about payment options, garden availability, and general lodging rules.</p>
 
       <div class="row">
 
-         <div class="image">
-            <img src="images/faqss.png" alt="" >
+         <div class="image" data-reveal="left">
+            <img src="images/faqss.png" alt="FAQ illustration" class="bounce">
          </div>
 
-         <div class="content">
+         <div class="content" data-reveal="right">
 
             <div class="box active">
-               <h3>What are the payment methods?</h3>
-               <p>Through cash payments or  cash tranfers</p>
+               <h3>What are the payment methods? <i class="fas fa-chevron-down" style="display:none"></i></h3>
+               <p>Through secure card payments online (via Paystack), bank transfers, or cash payments at our reception.</p>
             </div>
 
             <div class="box">
-               <h3>Can the Garden be used for a picnic?</h3>
-               <p>Yes, just book a day and the time</p>
+               <h3>Can the Garden be used for a picnic or private shoot? <i class="fas fa-chevron-down" style="display:none"></i></h3>
+               <p>Yes, our garden is perfect for picnics, birthday shoots, weddings, and music videos. Please book a day in advance through our contact form.</p>
             </div>
          </div>
 
@@ -432,67 +448,51 @@
 
          <div class="box">
             <h3>Contact Us</h3>
-            <a href="#"><i class="fa-solid fa-mobile"></i>+2349039284897</a>
-               <p>OR</p>
-            <a href="#"><i class="fa-solid fa-mobile"></i>+2347051555529</a>
-            <a href="#"><i class="fa-solid fa-paper-plane"></i>dikimrockgarden@gmail.com</a>
-            <a href="#"><i class="fa-solid fa-location-crosshairs"></i>Mountain Green Street, Jos, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Plateau State, Nigeria</a>
+            <a href="tel:+2349039284897"><i class="fa-solid fa-mobile"></i>+2349039284897</a>
+            <p style="color:#aaa;font-size:1.3rem;padding:.2rem 0;">OR</p>
+            <a href="tel:+2347051555529"><i class="fa-solid fa-mobile"></i>+2347051555529</a>
+            <a href="mailto:dikimrockgarden@gmail.com"><i class="fa-solid fa-paper-plane"></i>dikimrockgarden@gmail.com</a>
+            <a href="#"><i class="fa-solid fa-location-crosshairs"></i>Mountain Green Street, Jos, Plateau State, Nigeria</a>
          </div>
 
          <div class="box">
             <h3>Links</h3>
             <a href="/index.html">Home</a>
             <a href="#room">Lodging</a>
-            <a href="/cuisine.html"></i> Cuisine</a>
-            <a href="/vlb.html"></i>Lounge</a>
-            <a href="/gh.html"></i>Garden</a>
-            <a href="/vlb.html">Bar</a>
+            <a href="/cuisine.html">Cuisine</a>
+            <a href="/vlb.html">Lounge</a>
+            <a href="/gh.html">Garden</a>
+            <a href="/club.html">Club &amp; Karaoke</a>
          </div>
 
          <div class="box">
             <h3>Resources</h3>
-            <!-- <a href="#"></i>Privacy Policy</a> -->
-            <a href="#"></i> Refund policy</a>
-            <a href="#faq"></i>Faqs</a>
-            <!-- <a href="#">Terms of Service</a> -->
+            <a href="#">Refund Policy</a>
+            <a href="#faq">FAQs</a>
             <a href="/contact.html">Contact Us</a>
-            <!-- <a href="#"> Help Center</a> -->
          </div>
 
       </div>
 
-      <div class="share">
-         <a href="#" class="fab fa-facebook-f"></a>
-         <a href="#" class="fab fa-instagram"></a>
-         <a href="#" class="fab fa-twitter"></a>
-         <a href="#" class="fab fa-whatsapp"></a>
-      </div>
+      <div class="footer-bottom">
+         <div class="share">
+            <a href="#" class="fab fa-facebook-f" aria-label="Facebook"></a>
+            <a href="#" class="fab fa-instagram" aria-label="Instagram"></a>
+            <a href="#" class="fab fa-twitter" aria-label="Twitter"></a>
+            <a href="#" class="fab fa-whatsapp" aria-label="WhatsApp"></a>
+         </div>
 
-      <div class="credit"><div>&copy;copyright 2025 Dikim Rock Garden</div> <div>Built by <span>URRANTECH</div></span></div>
+         <div class="credit">
+            <div>&copy; 2025 Dikim Rock Garden</div>
+            <div>Built by <span>URRANTECH</span></div>
+         </div>
+      </div>
       <div class="down">All Rights Reserved</div>
    </section>
 
    <!-- end -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-   <script src="remita.js"></script> 
    <script src="script.js"></script>
 
 </body>
