@@ -601,7 +601,7 @@ section { padding: 8rem 8%; }
 .review-bg {
   position: absolute;
   inset: 0;
-  background-image: url("images/reviewpic.jpg");
+  background-image: url("/images/reviewpic.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
