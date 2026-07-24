@@ -28,6 +28,21 @@ export default function BookingPage() {
   // Load active rooms from Supabase
   useEffect(() => {
     async function loadRooms() {
+      // Check if Supabase env credentials are still default placeholders
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+      if (!supabaseUrl || supabaseUrl.includes('your-project-id')) {
+        console.log('Supabase has not been configured. Loading default static categories.');
+        setRooms([
+          { id: 1, name: 'Small Room', price: 10000 },
+          { id: 2, name: 'Family Room', price: 15000 },
+          { id: 3, name: 'Exclusive Suite', price: 20000 },
+          { id: 4, name: 'Executive Suite', price: 25000 },
+          { id: 5, name: 'Executive Suite II', price: 30000 }
+        ]);
+        setLoading(false);
+        return;
+      }
+
       try {
         const { data, error } = await supabase
           .from('rooms')
@@ -114,15 +129,17 @@ export default function BookingPage() {
   };
 
   return (
-    <>
+    <div className="payform-container">
       {/* Load Paystack Inline script */}
       <Script 
         src="https://js.paystack.co/v2/inline.js" 
         strategy="afterInteractive" 
       />
 
-      <div className="payform" data-reveal="fade" style={{ marginTop: '12rem', marginBottom: '8rem' }}>
+      <div className="payform" data-reveal="fade">
+        <div className="section-eyebrow">Reservations</div>
         <h2>Book a Room</h2>
+        <p>Select your suite and complete a secure booking in minutes.</p>
         <form id="paymentForm" onSubmit={(e) => e.preventDefault()}>
           <input 
             type="text" 
@@ -157,7 +174,7 @@ export default function BookingPage() {
 
           <input 
             type="number" 
-            placeholder="Enter amount (in ₦)" 
+            placeholder="Amount (₦)" 
             value={amount} 
             required 
             readOnly 
@@ -168,6 +185,6 @@ export default function BookingPage() {
           </button>
         </form>
       </div>
-    </>
+    </div>
   );
 }

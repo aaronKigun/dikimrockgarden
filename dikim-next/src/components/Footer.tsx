@@ -48,7 +48,7 @@ export default function Footer() {
         </div>
 
         <div className="credit">
-          <div>&copy; 2025 Dikim Rock Garden</div>
+          <div>&copy; 2026 Dikim Rock Garden</div>
           <div>Built by <span>URRANTECH</span></div>
         </div>
       </div>

@@ -1,5 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ScrollReveal from '@/components/ScrollReveal';
+import RouteLoader from '@/components/RouteLoader';
 
 export default function PublicLayout({
   children,
@@ -9,8 +11,10 @@ export default function PublicLayout({
   return (
     <>
       <Header />
-      <main style={{ flex: 1 }}>{children}</main>
+      <main>{children}</main>
       <Footer />
+      <ScrollReveal />
+      <RouteLoader />
     </>
   );
 }

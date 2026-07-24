@@ -1,60 +1,106 @@
+.payform-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rem 5% 6rem;
+  background:
+    radial-gradient(circle at top right, rgba(129, 199, 132, 0.22), transparent 42%),
+    radial-gradient(circle at bottom left, rgba(45, 158, 45, 0.12), transparent 40%),
+    var(--off-white);
+}
+
 .payform {
-    max-width: 48rem;
-    width: 90%;
-    margin: 13rem auto 5rem;
-    padding: 3rem 2.5rem;
-    background: white;
-    box-shadow: 0 .5rem 2rem rgba(0, 0, 0, 0.12);
-    border-radius: 1rem;
+  width: 100%;
+  max-width: 46rem;
+  padding: 4rem 3.5rem;
+  background: var(--white);
+  box-shadow: var(--sh-lg);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--g100);
+  text-align: left;
+}
+
+.payform .section-eyebrow {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .payform h2 {
-    font-size: 2.4rem;
-    color: #1a7a1a;
-    text-align: center;
-    margin-bottom: 2rem;
+  font-family: var(--ff-display);
+  font-size: 3.2rem;
+  color: var(--g700);
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.payform > p {
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--gray);
+  margin-bottom: 3rem;
+  line-height: 1.7;
 }
 
 .payform input,
-.payform select,
-.payform button {
-    width: 100%;
-    padding: 1.2rem 1.5rem;
-    margin: .8rem 0;
-    border: 1px solid #ccc;
-    border-radius: .5rem;
-    font-size: 1.6rem;
-    font-family: inherit;
+.payform select {
+  width: 100%;
+  padding: 1.4rem 1.6rem;
+  margin: 0 0 1.6rem;
+  border: 1.5px solid var(--g200);
+  border-radius: var(--r);
+  font-size: 1.5rem;
+  font-family: var(--ff-body);
+  color: var(--dark);
+  background: var(--off-white);
+  transition: var(--tr-fast);
 }
 
 .payform input:focus,
 .payform select:focus {
-    border-color: #4caf50;
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+  outline: none;
+  border-color: var(--g400);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.15);
+}
+
+.payform input[readonly] {
+  color: var(--g700);
+  font-weight: 600;
+  background: var(--g50);
 }
 
 .payform button {
-    background-color: #1a7a1a;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    letter-spacing: .5px;
-    margin-top: 1.5rem;
-    transition: background .2s ease;
+  width: 100%;
+  margin-top: .8rem;
+  padding: 1.5rem 3.2rem;
+  border: none;
+  border-radius: var(--r-full);
+  background: var(--grad-green);
+  color: var(--white);
+  font-size: 1.55rem;
+  font-weight: 600;
+  font-family: var(--ff-body);
+  letter-spacing: .04em;
+  cursor: pointer;
+  box-shadow: var(--sh-green);
+  transition: var(--tr);
 }
 
 .payform button:hover {
-    background-color: #4caf50;
+  transform: translateY(-3px);
+  box-shadow: var(--sh-green-lg);
 }
 
 @media (max-width: 576px) {
-    .payform {
-        margin-top: 10rem;
-        padding: 2rem 1.5rem;
-    }
+  .payform-container {
+    padding: 10rem 4% 4rem;
+  }
 
-    .payform h2 {
-        font-size: 2rem;
-    }
+  .payform {
+    padding: 3rem 2.2rem;
+  }
 }

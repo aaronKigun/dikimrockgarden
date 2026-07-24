@@ -96,6 +96,14 @@ export default function AdminDashboardPage() {
 
   // Query stats, transactions, rooms, and gallery details from Supabase
   const loadDashboardData = async () => {
+    // Verify credentials first
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    if (!supabaseUrl || supabaseUrl.includes('your-project-id')) {
+      triggerToast('Supabase is not configured yet. Set keys in .env.local', true);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       // 1. Fetch transactions
