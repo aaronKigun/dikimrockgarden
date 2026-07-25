@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 export default function VIPLoungePage() {
   return (
@@ -13,7 +13,7 @@ export default function VIPLoungePage() {
           <p>
             Relax in style at our VIP Lounge — a private, comfortable space for those who want a little extra exclusivity. Ideal for quiet chats or hosting a small gathering in an elegant atmosphere.
           </p>
-          <Link href="/contact" className="btn btn-primary">Reserve Lounge</Link>
+          <Link to="/contact" className="btn btn-primary">Reserve Lounge</Link>
         </div>
       </div>
 
@@ -24,7 +24,7 @@ export default function VIPLoungePage() {
           <p>
             Sit back, enjoy good conversation, or simply take a peaceful moment in our inviting lounge — the perfect spot to unwind.
           </p>
-          <Link href="/contact" className="btn btn-green-outline">Book Space</Link>
+          <Link to="/contact" className="btn btn-green-outline">Book Space</Link>
         </div>
         <div className="image">
           <img src="/images/lounge1.jpg" alt="Lounge area" />
@@ -41,7 +41,7 @@ export default function VIPLoungePage() {
           <p>
             Classic favorites and unique blends served in a space built for casual hangouts and nights out — there&apos;s always something to enjoy.
           </p>
-          <Link href="/contact" className="btn btn-primary">View Drinks Menu</Link>
+          <Link to="/contact" className="btn btn-primary">View Drinks Menu</Link>
         </div>
       </div>
     </section>

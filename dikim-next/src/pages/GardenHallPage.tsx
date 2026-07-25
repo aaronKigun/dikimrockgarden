@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 export default function GardenHallPage() {
   return (
@@ -13,7 +13,7 @@ export default function GardenHallPage() {
           <p>
             Enjoy nature in our garden — a peaceful space filled with greenery and open views. Perfect for picnics, photo shoots, weddings, or simply relaxing in the fresh air.
           </p>
-          <Link href="/contact" className="btn btn-primary">Book Garden Space</Link>
+          <Link to="/contact" className="btn btn-primary">Book Garden Space</Link>
         </div>
       </div>
 
@@ -24,7 +24,7 @@ export default function GardenHallPage() {
           <p>
             A spacious, well-equipped venue for weddings, conferences, birthdays, and gatherings — designed to make every occasion memorable.
           </p>
-          <Link href="/contact" className="btn btn-green-outline">Rent Hall</Link>
+          <Link to="/contact" className="btn btn-green-outline">Rent Hall</Link>
         </div>
         <div className="image">
           <img src="/images/bar.jpg" alt="Hall venue" />

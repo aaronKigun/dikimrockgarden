@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -23,19 +23,19 @@ export default function Footer() {
 
         <div className="box">
           <h3>Links</h3>
-          <Link href="/">Home</Link>
-          <Link href="/#room">Lodging</Link>
-          <Link href="/cuisine">Cuisine</Link>
-          <Link href="/vlb">Lounge</Link>
-          <Link href="/gh">Garden</Link>
-          <Link href="/club">Club &amp; Karaoke</Link>
+          <Link to="/">Home</Link>
+          <Link to="/#room">Lodging</Link>
+          <Link to="/cuisine">Cuisine</Link>
+          <Link to="/vlb">Lounge</Link>
+          <Link to="/gh">Garden</Link>
+          <Link to="/club">Club &amp; Karaoke</Link>
         </div>
 
         <div className="box">
           <h3>Resources</h3>
           <a href="#">Refund Policy</a>
-          <Link href="/#faq">FAQs</Link>
-          <Link href="/contact">Contact Us</Link>
+          <Link to="/#faq">FAQs</Link>
+          <Link to="/contact">Contact Us</Link>
         </div>
       </div>
 

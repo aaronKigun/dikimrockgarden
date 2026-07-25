@@ -1,16 +1,26 @@
+import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 
-export type BookingEmailPayload = {
-  name: string;
-  email: string;
-  room: string;
-  amount: number;
-  reference: string;
-  arrival_date?: string | null;
-  status: string;
-};
+export function getServerSupabase() {
+  const url =
+    process.env.SUPABASE_URL ||
+    process.env.VITE_SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    '';
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.VITE_SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    '';
 
-function formatArrival(date?: string | null) {
+  if (!url || !key) {
+    throw new Error('Supabase server credentials are missing');
+  }
+
+  return createClient(url, key);
+}
+
+function formatArrival(date) {
   if (!date) return 'Not provided';
   try {
     return new Date(date).toLocaleDateString('en-NG', {
@@ -24,20 +34,18 @@ function formatArrival(date?: string | null) {
   }
 }
 
-export async function sendBookingNotification(booking: BookingEmailPayload) {
+export async function sendBookingNotification(booking) {
   const apiKey = process.env.RESEND_API_KEY;
   const notifyTo = process.env.BOOKING_NOTIFY_EMAIL || 'dikimrockgarden@gmail.com';
-  // Resend test sender works immediately; replace with your verified domain later
   const from =
     process.env.RESEND_FROM_EMAIL || 'Dikim Rock Garden <onboarding@resend.dev>';
 
   if (!apiKey || apiKey === 'your-resend-api-key') {
     console.warn('Booking email skipped: set RESEND_API_KEY in .env.local');
-    return { sent: false, reason: 'RESEND_API_KEY not configured' as const };
+    return { sent: false, reason: 'RESEND_API_KEY not configured' };
   }
 
   const resend = new Resend(apiKey);
-
   const amountText = `₦${Number(booking.amount || 0).toLocaleString('en-NG', {
     minimumFractionDigits: 2,
   })}`;
@@ -94,5 +102,5 @@ export async function sendBookingNotification(booking: BookingEmailPayload) {
     return { sent: false, reason: error.message || 'Resend send failed' };
   }
 
-  return { sent: true as const, id: data?.id };
+  return { sent: true, id: data?.id };
 }

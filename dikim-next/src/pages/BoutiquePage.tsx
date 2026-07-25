@@ -1,4 +1,4 @@
-import '@/app/mall.css';
+import '@/styles/mall.css';
 
 export default function BoutiquePage() {
   const items = [

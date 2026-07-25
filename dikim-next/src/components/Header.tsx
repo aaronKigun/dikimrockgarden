@@ -1,13 +1,10 @@
-'use client';
-
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const pathname = usePathname();
+  const { pathname } = useLocation();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -37,7 +34,7 @@ export default function Header() {
   return (
     <header className={`header ${isScrolled ? 'scrolled' : ''} ${isOpen ? 'menu-open' : ''}`}>
       <div className="header-bar">
-        <Link href="/" className="logo" onClick={closeMenu}>
+        <Link to="/" className="logo" onClick={closeMenu}>
           <img src="/images/Reallogo.jpg" alt="Dikim Rock Garden Logo" />
         </Link>
 
@@ -47,7 +44,7 @@ export default function Header() {
             return (
               <Link
                 key={link.href}
-                href={link.href}
+                to={link.href}
                 className={isActive ? 'active' : ''}
               >
                 {link.label}
@@ -86,7 +83,7 @@ export default function Header() {
           return (
             <Link
               key={link.href}
-              href={link.href}
+              to={link.href}
               className={isActive ? 'active' : ''}
               onClick={closeMenu}
             >

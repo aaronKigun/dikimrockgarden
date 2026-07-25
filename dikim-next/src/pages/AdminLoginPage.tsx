@@ -1,8 +1,6 @@
-'use client';
-
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function AdminLoginPage() {
@@ -10,18 +8,18 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   // Redirect if already logged in
   useEffect(() => {
     async function checkActiveSession() {
       const { data } = await supabase.auth.getSession();
       if (data?.session) {
-        router.push('/admin/dashboard');
+        navigate('/admin/dashboard');
       }
     }
     checkActiveSession();
-  }, [router]);
+  }, [navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +35,7 @@ export default function AdminLoginPage() {
       if (authError) {
         setError(authError.message);
       } else {
-        router.push('/admin/dashboard');
+        navigate('/admin/dashboard');
       }
     } catch (err: any) {
       console.error('Login error:', err);
@@ -52,17 +50,17 @@ export default function AdminLoginPage() {
       
       {/* Header */}
       <header className="header">
-        <Link href="/" className="logo">
+        <Link to="/" className="logo">
           <img src="/images/Reallogo.jpg" alt="Dikim Rock Garden Logo" />
         </Link>
         <nav className="navbar">
-          <Link href="/">HOME</Link>
-          <Link href="/cuisine">CUISINE</Link>
-          <Link href="/vlb">VIP LOUNGE/BAR</Link>
-          <Link href="/gh">GARDEN/HALL</Link>
-          <Link href="/club">CLUB/KARAOKE</Link>
-          <Link href="/mall">BOUTIQUE</Link>
-          <Link href="/contact">CONTACT US</Link>
+          <Link to="/">HOME</Link>
+          <Link to="/cuisine">CUISINE</Link>
+          <Link to="/vlb">VIP LOUNGE/BAR</Link>
+          <Link to="/gh">GARDEN/HALL</Link>
+          <Link to="/club">CLUB/KARAOKE</Link>
+          <Link to="/mall">BOUTIQUE</Link>
+          <Link to="/contact">CONTACT US</Link>
         </nav>
       </header>
 

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 export default function CuisinePage() {
   return (
@@ -13,7 +13,7 @@ export default function CuisinePage() {
           <p>
             Indulge in delicious flavors featuring local favorites and continental dishes. From hearty meals to fresh appetizers, our kitchen has something to satisfy every taste.
           </p>
-          <Link href="/contact" className="btn btn-primary">Book A Table</Link>
+          <Link to="/contact" className="btn btn-primary">Book A Table</Link>
         </div>
       </div>
     </section>

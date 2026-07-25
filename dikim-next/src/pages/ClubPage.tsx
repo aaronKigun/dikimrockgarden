@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 export default function ClubPage() {
   return (
@@ -12,7 +12,7 @@ export default function ClubPage() {
           <h1>Nightclub &amp; Karaoke</h1>
           <p>High-energy beats, premium lighting, and private karaoke rooms for unforgettable nights.</p>
           <div className="hero-btns">
-            <Link href="/contact" className="btn btn-primary">Book A Lounge</Link>
+            <Link to="/contact" className="btn btn-primary">Book A Lounge</Link>
             <a href="#club-details" className="btn btn-outline">Explore Nightlife</a>
           </div>
         </div>
@@ -29,7 +29,7 @@ export default function ClubPage() {
             <p>
               Step into the ultimate party destination in Jos. Our nightclub features state-of-the-art sound systems, captivating laser shows, and guest DJs spinning the hottest tracks. Enjoy our premium bar services and high-energy dance floor designed to keep you grooving all night long.
             </p>
-            <Link href="/contact" className="btn">VIP Reservations</Link>
+            <Link to="/contact" className="btn">VIP Reservations</Link>
           </div>
         </div>
 
@@ -43,7 +43,7 @@ export default function ClubPage() {
             <p>
               Gather your friends and family for an intimate and fun musical experience. Our private karaoke rooms are equipped with top-tier microphones, an extensive multi-genre song catalog, and personal bar service. Whether you&apos;re a professional singer or just looking to have fun, we have the perfect stage for you.
             </p>
-            <Link href="/contact" className="btn btn-green-outline">Book Private Room</Link>
+            <Link to="/contact" className="btn btn-green-outline">Book Private Room</Link>
           </div>
         </div>
       </section>

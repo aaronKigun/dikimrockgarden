@@ -1,7 +1,5 @@
-'use client';
-
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination, EffectFade } from 'swiper/modules';
@@ -13,8 +11,6 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
 // Prevents Next.js from trying to server-render Swiper during build (Fixes SIGABRT)
-export const dynamic = 'force-dynamic';
-
 interface Room {
   id: number;
   name: string;
@@ -38,7 +34,7 @@ export default function HomePage() {
   // Load dynamic data from Supabase
   useEffect(() => {
     async function fetchData() {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
       
       // Safety check: if supabase client is null or env vars are missing, use fallbacks
       if (!supabase || !supabaseUrl || supabaseUrl.includes('your-project-id') || supabaseUrl.includes('placeholder')) {
@@ -109,7 +105,7 @@ export default function HomePage() {
               <p>A sanctuary where luxury meets natural elegance — premium gardens, lodging, and dining in the heart of Jos.</p>
               <div className="hero-btns">
                 <a href="#about" className="btn btn-primary">Discover More</a>
-                <Link href="/contact" className="btn btn-outline">Contact Us</Link>
+                <Link to="/contact" className="btn btn-outline">Contact Us</Link>
               </div>
             </div>
           </SwiperSlide>
@@ -120,8 +116,8 @@ export default function HomePage() {
               <h3>Beautiful Outdoor Venues</h3>
               <p>Host your events or simply relax among manicured lawns and botanical gardens built for celebration.</p>
               <div className="hero-btns">
-                <Link href="/gh" className="btn btn-primary">Our Garden &amp; Hall</Link>
-                <Link href="/paymentform" className="btn btn-outline">Book Now</Link>
+                <Link to="/gh" className="btn btn-primary">Our Garden &amp; Hall</Link>
+                <Link to="/paymentform" className="btn btn-outline">Book Now</Link>
               </div>
             </div>
           </SwiperSlide>
@@ -133,7 +129,7 @@ export default function HomePage() {
               <p>Experience suites with maximum privacy and premium hospitality — quiet comfort, elevated service.</p>
               <div className="hero-btns">
                 <a href="#room" className="btn btn-primary">View Rooms</a>
-                <Link href="/vlb" className="btn btn-outline">VIP Lounge</Link>
+                <Link to="/vlb" className="btn btn-outline">VIP Lounge</Link>
               </div>
             </div>
           </SwiperSlide>
@@ -162,7 +158,7 @@ export default function HomePage() {
             <div className="section-eyebrow">About Us</div>
             <h3>Nature, Luxury &amp; Entertainment</h3>
             <p>Welcome to Dikim Rock Garden, a premium destination that beautifully merges the charm of nature with modern luxury, relaxation, and high-energy entertainment. Our property offers a stunning garden oasis, a fully stocked premium bar, a VIP lounge, private club and karaoke, comfortable lodging suites, an exquisite restaurant with international and local cuisines, and event halls for rent.</p>
-            <Link href="/contact" className="btn">Get in touch</Link>
+            <Link to="/contact" className="btn">Get in touch</Link>
           </div>
         </div>
       </section>
@@ -203,7 +199,7 @@ export default function HomePage() {
                       <div className="stars">
                         <i className="fas fa-star"></i><i className="fas fa-star"></i><i className="fas fa-star"></i><i className="fas fa-star"></i><i className="fas fa-star-half-alt"></i>
                       </div>
-                      <Link href="/paymentform" className="btn">Book Now</Link>
+                      <Link to="/paymentform" className="btn">Book Now</Link>
                     </div>
                   </SwiperSlide>
                 ))
@@ -227,7 +223,7 @@ export default function HomePage() {
                             <i key={`e-${i}`} className="far fa-star"></i>
                           ))}
                         </div>
-                        <Link href="/paymentform" className="btn">Book Now</Link>
+                        <Link to="/paymentform" className="btn">Book Now</Link>
                       </div>
                     </SwiperSlide>
                   );

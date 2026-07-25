@@ -1,11 +1,9 @@
-'use client';
-
 import { useEffect, useRef, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useLocation } from 'react-router-dom';
 import BrandLoader from '@/components/BrandLoader';
 
 export default function RouteLoader() {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const [visible, setVisible] = useState(false);
   const isFirst = useRef(true);
 

@@ -1,9 +1,7 @@
-'use client';
-
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
-import '../admin.css';
+import '@/styles/admin.css';
 
 interface Transaction {
   id: number;
@@ -13,7 +11,6 @@ interface Transaction {
   amount: number;
   reference: string;
   status: string;
-  arrival_date?: string | null;
   created_at: string;
 }
 
@@ -32,7 +29,7 @@ interface GalleryItem {
 }
 
 export default function AdminDashboardPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [adminUser, setAdminUser] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'bookings' | 'rooms' | 'gallery'>('overview');
   
@@ -70,14 +67,14 @@ export default function AdminDashboardPage() {
     async function checkAuthAndLoad() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        router.push('/admin/login');
+        navigate('/admin/login');
       } else {
         setAdminUser(session.user);
         await loadDashboardData();
       }
     }
     checkAuthAndLoad();
-  }, [router]);
+  }, [navigate]);
 
   // Display automatic notification toast alerts
   const triggerToast = (msg: string, isErr = false) => {
@@ -91,14 +88,14 @@ export default function AdminDashboardPage() {
     if (error) {
       triggerToast('Logout failed: ' + error.message, true);
     } else {
-      router.push('/admin/login');
+      navigate('/admin/login');
     }
   };
 
   // Query stats, transactions, rooms, and gallery details from Supabase
   const loadDashboardData = async () => {
     // Verify credentials first
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
     if (!supabaseUrl || supabaseUrl.includes('your-project-id')) {
       triggerToast('Supabase is not configured yet. Set keys in .env.local', true);
       setLoading(false);
@@ -451,7 +448,6 @@ export default function AdminDashboardPage() {
                      <tr>
                         <th>Guest Name</th>
                         <th>Room Type</th>
-                        <th>Arrival</th>
                         <th>Price Paid</th>
                         <th>Paystack Reference</th>
                         <th>Status</th>
@@ -460,15 +456,14 @@ export default function AdminDashboardPage() {
                   </thead>
                   <tbody>
                      {loading ? (
-                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
+                       <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
                      ) : transactions.length === 0 ? (
-                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions found.</td></tr>
+                       <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions found.</td></tr>
                      ) : (
                        transactions.slice(0, 5).map(tx => (
                          <tr key={tx.id}>
                            <td><strong>{tx.name}</strong><br /><span style={{ fontSize: '1.2rem', color: 'var(--gray)' }}>{tx.email}</span></td>
                            <td>{tx.room}</td>
-                           <td>{tx.arrival_date ? new Date(tx.arrival_date).toLocaleDateString() : '—'}</td>
                            <td><strong>₦{tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></td>
                            <td><code style={{ fontFamily: 'monospace', fontSize: '1.3rem' }}>{tx.reference}</code></td>
                            <td><span className={`badge ${tx.status === 'success' ? 'success' : 'failed'}`}>{tx.status}</span></td>
@@ -506,7 +501,6 @@ export default function AdminDashboardPage() {
                         <th>ID</th>
                         <th>Guest Info</th>
                         <th>Booked Room</th>
-                        <th>Arrival Date</th>
                         <th>Amount</th>
                         <th>Payment Reference</th>
                         <th>Payment Status</th>
@@ -515,9 +509,9 @@ export default function AdminDashboardPage() {
                   </thead>
                   <tbody>
                      {loading ? (
-                       <tr><td colSpan={8} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
+                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
                      ) : filteredTransactions.length === 0 ? (
-                       <tr><td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions match search search query.</td></tr>
+                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions match search search query.</td></tr>
                      ) : (
                        filteredTransactions.map(tx => (
                          <tr key={tx.id}>
@@ -527,7 +521,6 @@ export default function AdminDashboardPage() {
                              <a href={`mailto:${tx.email}`} style={{ fontSize: '1.2rem', color: 'var(--g600)' }}>{tx.email}</a>
                            </td>
                            <td>{tx.room}</td>
-                           <td>{tx.arrival_date ? new Date(tx.arrival_date).toLocaleDateString() : '—'}</td>
                            <td><strong>₦{tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></td>
                            <td><code style={{ fontFamily: 'monospace', fontSize: '1.3rem' }}>{tx.reference}</code></td>
                            <td><span className={`badge ${tx.status === 'success' ? 'success' : 'failed'}`}>{tx.status}</span></td>

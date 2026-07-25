@@ -1,9 +1,6 @@
-'use client';
-
 import { useState, useEffect } from 'react';
-import Script from 'next/script';
 import { supabase } from '@/lib/supabaseClient';
-import '@/app/paymentform.css';
+import '@/styles/paymentform.css';
 
 interface Room {
   id: number;
@@ -30,7 +27,7 @@ export default function BookingPage() {
   useEffect(() => {
     async function loadRooms() {
       // Check if Supabase env credentials are still default placeholders
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
       if (!supabaseUrl || supabaseUrl.includes('your-project-id')) {
         console.log('Supabase has not been configured. Loading default static categories.');
         setRooms([
@@ -133,13 +130,7 @@ export default function BookingPage() {
 
   return (
     <div className="payform-container">
-      {/* Load Paystack Inline script */}
-      <Script 
-        src="https://js.paystack.co/v2/inline.js" 
-        strategy="afterInteractive" 
-      />
-
-      <div className="payform" data-reveal="fade">
+<div className="payform" data-reveal="fade">
         <div className="section-eyebrow">Reservations</div>
         <h2>Book a Room</h2>
         <p>Select your suite and complete a secure booking in minutes.</p>
