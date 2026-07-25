@@ -76,23 +76,26 @@
 .payform button {
   width: 100%;
   margin-top: .8rem;
-  padding: 1.5rem 3.2rem;
-  border: none;
-  border-radius: var(--r-full);
-  background: var(--grad-green);
+  padding: 1.35rem 2.8rem;
+  border: 1.5px solid var(--g600);
+  border-radius: .4rem;
+  background: var(--g600);
   color: var(--white);
-  font-size: 1.55rem;
+  font-size: 1.25rem;
   font-weight: 600;
   font-family: var(--ff-body);
-  letter-spacing: .04em;
+  letter-spacing: .08em;
+  text-transform: uppercase;
   cursor: pointer;
-  box-shadow: var(--sh-green);
+  box-shadow: none;
   transition: var(--tr);
 }
 
 .payform button:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--sh-green-lg);
+  background: var(--g500);
+  border-color: var(--g500);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(13, 92, 13, 0.35);
 }
 
 @media (max-width: 576px) {

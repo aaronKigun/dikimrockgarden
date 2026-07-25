@@ -9,7 +9,7 @@ export default function BoutiquePage() {
 
   return (
     <section className="picture-grid" data-reveal="fade">
-      <div className="section-eyebrow">Shop Dikim</div>
+      <div className="section-eyebrow">Shop</div>
       <h1 className="heading">Boutique</h1>
       <p className="token">
         A handpicked selection of stylish clothes, accessories, and unique finds — perfect for gifts or treating yourself.

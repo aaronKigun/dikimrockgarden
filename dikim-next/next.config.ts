@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Hide the Next.js on-screen route / loading indicator in development
   devIndicators: false,
+  images: {
+    // Prevents Next.js from trying to load the 'sharp' module during build
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;

@@ -12,6 +12,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
+// Prevents Next.js from trying to server-render Swiper during build (Fixes SIGABRT)
+export const dynamic = 'force-dynamic';
+
 interface Room {
   id: number;
   name: string;
@@ -36,7 +39,9 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchData() {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-      if (!supabaseUrl || supabaseUrl.includes('your-project-id') || supabaseUrl.includes('placeholder')) {
+      
+      // Safety check: if supabase client is null or env vars are missing, use fallbacks
+      if (!supabase || !supabaseUrl || supabaseUrl.includes('your-project-id') || supabaseUrl.includes('placeholder')) {
         console.log('Supabase has not been configured. Loading static fallbacks.');
         setLoading(false);
         return;
