@@ -1,10 +1,19 @@
-const { spawn } = require("child_process");
+const { createServer } = require('http');
+const { parse } = require('url');
+const next = require('next');
 
-// Use 'node' directly to run the Next.js CLI instead of 'npx'
-const child = spawn("node", ["node_modules/next/dist/bin/next", "start"], {
-  stdio: "inherit",
-  shell: true,
-  env: process.env,
+// Phusion Passenger provides the PORT via environment variable
+const port = process.env.PORT || 3000;
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
+
+app.prepare().then(() => {
+  createServer((req, res) => {
+    const parsedUrl = parse(req.url, true);
+    handle(req, res, parsedUrl);
+  }).listen(port, (err) => {
+    if (err) throw err;
+    console.log(`> Ready on http://localhost:${port}`);
+  });
 });
-
-child.on("close", (code) => process.exit(code));
