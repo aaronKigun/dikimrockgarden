@@ -35,35 +35,38 @@ export default function HomePage() {
   // Load dynamic data from Supabase
   useEffect(() => {
     async function fetchData() {
-      // Check if Supabase env credentials are still default placeholders
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-      if (!supabaseUrl || supabaseUrl.includes('your-project-id')) {
+      if (!supabaseUrl || supabaseUrl.includes('your-project-id') || supabaseUrl.includes('placeholder')) {
         console.log('Supabase has not been configured. Loading static fallbacks.');
         setLoading(false);
         return;
       }
 
       try {
-        // Fetch rooms
         const { data: roomsData, error: roomsError } = await supabase
           .from('rooms')
           .select('*')
           .order('price', { ascending: true });
 
-        if (roomsError) throw roomsError;
-        if (roomsData) setRooms(roomsData);
+        if (roomsError) {
+          // Missing table (404) or RLS — keep static room fallbacks
+          console.warn('Rooms unavailable from Supabase; using fallbacks.', roomsError.message);
+        } else if (roomsData) {
+          setRooms(roomsData);
+        }
 
-        // Fetch gallery
         const { data: galleryData, error: galleryError } = await supabase
           .from('gallery')
           .select('*')
           .order('id', { ascending: false });
 
-        if (galleryError) throw galleryError;
-        if (galleryData) setGallery(galleryData);
-
+        if (galleryError) {
+          console.warn('Gallery unavailable from Supabase; using fallbacks.', galleryError.message);
+        } else if (galleryData) {
+          setGallery(galleryData);
+        }
       } catch (err) {
-        console.error('Error fetching landing page data:', err);
+        console.warn('Landing page data fetch failed; using static fallbacks.', err);
       } finally {
         setLoading(false);
       }
@@ -88,10 +91,10 @@ export default function HomePage() {
           grabCursor={true}
           autoplay={{ delay: 6000, disableOnInteraction: false }}
           navigation={{
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            nextEl: '.hero-nav-next',
+            prevEl: '.hero-nav-prev',
           }}
-          pagination={{ clickable: true }}
+          pagination={{ clickable: true, el: '.hero-pagination' }}
           className="home-slider"
         >
           <SwiperSlide className="slide" style={{ backgroundImage: 'url(/images/h1.jpg)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -130,8 +133,17 @@ export default function HomePage() {
             </div>
           </SwiperSlide>
 
-          <div className="swiper-button-next"></div>
-          <div className="swiper-button-prev"></div>
+          <button type="button" className="hero-nav hero-nav-prev" aria-label="Previous slide">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M15 5L8 12L15 19" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button type="button" className="hero-nav hero-nav-next" aria-label="Next slide">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <div className="hero-pagination"></div>
         </Swiper>
       </section>
 

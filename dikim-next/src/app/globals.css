@@ -477,41 +477,143 @@ section { padding: 8rem 8%; }
 }
 .home .slide .content .hero-btns {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.4rem;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-/* swiper controls */
-.swiper-button-next,
-.swiper-button-prev {
-  width: 5.2rem; height: 5.2rem;
-  background: rgba(255,255,255,.14);
-  backdrop-filter: blur(10px);
-  border: 1.5px solid rgba(255,255,255,.3);
-  border-radius: 50%;
-  color: var(--white);
-  transition: var(--tr);
+/* Hero CTAs — quieter, less “pill” */
+.home .hero-btns .btn {
+  border-radius: .4rem;
+  padding: 1.35rem 2.8rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  font-weight: 600;
+  box-shadow: none;
 }
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
+.home .hero-btns .btn-primary {
   background: var(--g600);
-  border-color: var(--g600);
-  box-shadow: var(--sh-green);
+  border: 1.5px solid var(--g600);
 }
-.swiper-button-next::after,
-.swiper-button-prev::after { font-size: 1.5rem; font-weight: 700; }
+.home .hero-btns .btn-primary:hover {
+  background: var(--g500);
+  border-color: var(--g500);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(13, 92, 13, 0.35);
+}
+.home .hero-btns .btn-outline {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  backdrop-filter: none;
+}
+.home .hero-btns .btn-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--white);
+  transform: translateY(-2px);
+}
+.home .hero-btns .btn::after { display: none; }
 
-.swiper-pagination-bullet {
-  width: 1rem; height: 1rem;
-  background: rgba(255,255,255,.5);
+/* Hero nav arrows — slim side controls */
+.home-slider {
+  position: relative;
+}
+.home-slider .hero-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  transform: translateY(-50%);
+  width: 4.8rem;
+  height: 7.2rem;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 32, 6, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: .2rem;
+  color: var(--white);
+  cursor: pointer;
+  transition: background var(--tr), border-color var(--tr), color var(--tr), transform var(--tr);
+}
+.home-slider .hero-nav svg {
+  width: 2.2rem;
+  height: 2.2rem;
+  display: block;
+}
+.home-slider .hero-nav-prev { left: 2.4rem; }
+.home-slider .hero-nav-next { right: 2.4rem; }
+.home-slider .hero-nav:hover {
+  background: var(--g600);
+  border-color: var(--g400);
+  color: var(--white);
+}
+.home-slider .hero-nav:active {
+  transform: translateY(-50%) scale(0.96);
+}
+.home-slider .hero-nav.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Hero pagination — thin green bars */
+.home-slider .hero-pagination {
+  position: absolute;
+  left: 50%;
+  bottom: 3.2rem;
+  z-index: 5;
+  transform: translateX(-50%);
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+}
+.home-slider .hero-pagination .swiper-pagination-bullet {
+  width: 2.4rem;
+  height: .3rem;
+  margin: 0 !important;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+  transition: width var(--tr), background var(--tr);
+}
+.home-slider .hero-pagination .swiper-pagination-bullet-active {
+  width: 4.2rem;
+  background: var(--g400);
+}
+
+/* Other swipers keep simpler controls */
+.room-slider .swiper-pagination-bullet,
+.review-slider .swiper-pagination-bullet,
+.gallery-slider .swiper-pagination-bullet {
+  width: 1rem;
+  height: 1rem;
+  background: rgba(45, 158, 45, 0.35);
   opacity: 1;
   transition: var(--tr);
 }
-.swiper-pagination-bullet-active {
-  background: var(--g400);
-  width: 2.8rem;
+.room-slider .swiper-pagination-bullet-active,
+.review-slider .swiper-pagination-bullet-active,
+.gallery-slider .swiper-pagination-bullet-active {
+  background: var(--g500);
+  width: 2.4rem;
   border-radius: .5rem;
+}
+
+@media (max-width: 768px) {
+  .home-slider .hero-nav {
+    width: 3.8rem;
+    height: 5.4rem;
+  }
+  .home-slider .hero-nav-prev { left: 1.2rem; }
+  .home-slider .hero-nav-next { right: 1.2rem; }
+  .home-slider .hero-pagination { bottom: 2.2rem; }
+}
+
+@media (max-width: 576px) {
+  .home-slider .hero-nav { display: none; }
 }
 
 /* ============================================================
