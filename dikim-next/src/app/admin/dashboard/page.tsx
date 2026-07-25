@@ -13,6 +13,7 @@ interface Transaction {
   amount: number;
   reference: string;
   status: string;
+  arrival_date?: string | null;
   created_at: string;
 }
 
@@ -450,6 +451,7 @@ export default function AdminDashboardPage() {
                      <tr>
                         <th>Guest Name</th>
                         <th>Room Type</th>
+                        <th>Arrival</th>
                         <th>Price Paid</th>
                         <th>Paystack Reference</th>
                         <th>Status</th>
@@ -458,14 +460,15 @@ export default function AdminDashboardPage() {
                   </thead>
                   <tbody>
                      {loading ? (
-                       <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
+                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
                      ) : transactions.length === 0 ? (
-                       <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions found.</td></tr>
+                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions found.</td></tr>
                      ) : (
                        transactions.slice(0, 5).map(tx => (
                          <tr key={tx.id}>
                            <td><strong>{tx.name}</strong><br /><span style={{ fontSize: '1.2rem', color: 'var(--gray)' }}>{tx.email}</span></td>
                            <td>{tx.room}</td>
+                           <td>{tx.arrival_date ? new Date(tx.arrival_date).toLocaleDateString() : '—'}</td>
                            <td><strong>₦{tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></td>
                            <td><code style={{ fontFamily: 'monospace', fontSize: '1.3rem' }}>{tx.reference}</code></td>
                            <td><span className={`badge ${tx.status === 'success' ? 'success' : 'failed'}`}>{tx.status}</span></td>
@@ -503,6 +506,7 @@ export default function AdminDashboardPage() {
                         <th>ID</th>
                         <th>Guest Info</th>
                         <th>Booked Room</th>
+                        <th>Arrival Date</th>
                         <th>Amount</th>
                         <th>Payment Reference</th>
                         <th>Payment Status</th>
@@ -511,9 +515,9 @@ export default function AdminDashboardPage() {
                   </thead>
                   <tbody>
                      {loading ? (
-                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
+                       <tr><td colSpan={8} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
                      ) : filteredTransactions.length === 0 ? (
-                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions match search search query.</td></tr>
+                       <tr><td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions match search search query.</td></tr>
                      ) : (
                        filteredTransactions.map(tx => (
                          <tr key={tx.id}>
@@ -523,6 +527,7 @@ export default function AdminDashboardPage() {
                              <a href={`mailto:${tx.email}`} style={{ fontSize: '1.2rem', color: 'var(--g600)' }}>{tx.email}</a>
                            </td>
                            <td>{tx.room}</td>
+                           <td>{tx.arrival_date ? new Date(tx.arrival_date).toLocaleDateString() : '—'}</td>
                            <td><strong>₦{tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></td>
                            <td><code style={{ fontFamily: 'monospace', fontSize: '1.3rem' }}>{tx.reference}</code></td>
                            <td><span className={`badge ${tx.status === 'success' ? 'success' : 'failed'}`}>{tx.status}</span></td>

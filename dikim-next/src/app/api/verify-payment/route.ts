@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
+import { sendBookingNotification } from '@/lib/sendBookingEmail';
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const { reference, name, email, room, amount } = data;
+    const { reference, name, email, room, amount, arrival_date } = data;
 
     if (!reference) {
       return NextResponse.json(
@@ -52,6 +53,7 @@ export async function POST(request: Request) {
         amount: parseFloat(amount) || 0,
         reference: reference,
         status: status,
+        arrival_date: arrival_date || null,
       },
     ]);
 
@@ -63,10 +65,30 @@ export async function POST(request: Request) {
       );
     }
 
-    // Success response
+    // Notify Dikim Rock Garden inbox (does not fail the booking if email fails)
+    let emailSent = false;
+    try {
+      const mailResult = await sendBookingNotification({
+        name: name || '',
+        email: email || '',
+        room: room || '',
+        amount: parseFloat(amount) || 0,
+        reference,
+        arrival_date: arrival_date || null,
+        status,
+      });
+      emailSent = Boolean(mailResult.sent);
+      if (!mailResult.sent) {
+        console.warn('Booking saved, but notification email was not sent:', mailResult.reason);
+      }
+    } catch (mailErr) {
+      console.error('Booking notification email failed:', mailErr);
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Payment verified and stored successfully!',
+      emailSent,
     });
   } catch (error: any) {
     console.error('API Verification error:', error);

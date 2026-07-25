@@ -23,6 +23,7 @@ export default function BookingPage() {
   const [email, setEmail] = useState('');
   const [selectedRoomName, setSelectedRoomName] = useState('');
   const [amount, setAmount] = useState<number | ''>('');
+  const [arrivalDate, setArrivalDate] = useState('');
   const [loading, setLoading] = useState(true);
 
   // Load active rooms from Supabase
@@ -73,7 +74,7 @@ export default function BookingPage() {
   };
 
   const handleBooking = () => {
-    if (!name || !email || !selectedRoomName || !amount) {
+    if (!name || !email || !selectedRoomName || !amount || !arrivalDate) {
       alert('Please fill in all fields.');
       return;
     }
@@ -103,6 +104,7 @@ export default function BookingPage() {
             email: email,
             room: selectedRoomName,
             amount: amount,
+            arrival_date: arrivalDate,
           }),
         })
           .then(res => res.json())
@@ -113,6 +115,7 @@ export default function BookingPage() {
               setEmail('');
               setSelectedRoomName('');
               setAmount('');
+              setArrivalDate('');
             } else {
               alert('Payment verification failed: ' + data.message);
             }
@@ -178,6 +181,16 @@ export default function BookingPage() {
             value={amount} 
             required 
             readOnly 
+          />
+
+          <label className="payform-label" htmlFor="arrivalDate">Arrival Date</label>
+          <input
+            type="date"
+            id="arrivalDate"
+            value={arrivalDate}
+            onChange={(e) => setArrivalDate(e.target.value)}
+            min={new Date().toISOString().split('T')[0]}
+            required
           />
           
           <button type="button" onClick={handleBooking}>

@@ -51,8 +51,12 @@ CREATE TABLE IF NOT EXISTS transactions (
     amount NUMERIC(10, 2) NOT NULL,
     reference TEXT NOT NULL UNIQUE,
     status TEXT NOT NULL,
+    arrival_date DATE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- If transactions already exists without arrival_date, run:
+-- ALTER TABLE transactions ADD COLUMN IF NOT EXISTS arrival_date DATE;
 
 -- 4. Create Contact Messages Table
 CREATE TABLE IF NOT EXISTS contact_messages (

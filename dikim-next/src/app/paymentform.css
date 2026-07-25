@@ -73,6 +73,21 @@
   background: var(--g50);
 }
 
+.payform-label {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--g700);
+  margin: 0 0 .6rem;
+  letter-spacing: .02em;
+  text-align: left;
+}
+
+.payform input[type="date"] {
+  color: var(--dark);
+  color-scheme: light;
+}
+
 .payform button {
   width: 100%;
   margin-top: .8rem;

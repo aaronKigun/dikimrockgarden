@@ -1,0 +1,5 @@
+{
+  "simpleBrowser.focusLockIndicator.enabled": false,
+  "livePreview.autoRefreshPreview": "On All Changes",
+  "livePreview.openPreviewTarget": "External Browser"
+}

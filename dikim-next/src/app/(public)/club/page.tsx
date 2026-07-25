@@ -5,7 +5,7 @@ export default function ClubPage() {
     <>
       <section
         className="page-hero"
-        style={{ backgroundImage: 'url(/images/water.jpg)' }}
+        style={{ backgroundImage: 'url(/images/club-karaoke-hero.png)' }}
       >
         <div className="content">
           <div className="brand">Dikim Rock Garden</div>
