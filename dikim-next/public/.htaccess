@@ -1,0 +1,15 @@
+# SPA routing for Apache (Go54 / cPanel shared hosting)
+# Put this in the same folder as index.html (public_html)
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Keep real files and folders (assets, images, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Everything else → React app
+  RewriteRule ^ index.html [L]
+</IfModule>
