@@ -52,7 +52,8 @@ function formatArrival(date?: string | null) {
 }
 
 function formatMoney(amount: number) {
-  return `₦${Number(amount || 0).toLocaleString('en-NG', {
+  // ASCII-only label: jsPDF Helvetica cannot render ₦ (or some en-NG glyphs)
+  return `NGN ${Number(amount || 0).toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
