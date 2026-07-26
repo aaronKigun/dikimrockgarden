@@ -643,6 +643,159 @@
    background: #c62828;
 }
 
+/* ===== Admin Login (standalone, no public nav) ===== */
+.admin-login-page {
+   min-height: 100vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 3rem 1.6rem;
+   position: relative;
+   font-family: var(--ff-body);
+   color: var(--dark);
+   overflow: hidden;
+}
+
+.admin-login-bg {
+   position: absolute;
+   inset: 0;
+   background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(46, 125, 50, 0.18), transparent 55%),
+      radial-gradient(ellipse 70% 50% at 90% 90%, rgba(27, 94, 32, 0.12), transparent 50%),
+      linear-gradient(160deg, #f7fbf7 0%, #e8f5e9 45%, #f1f8f2 100%);
+   z-index: 0;
+}
+
+.admin-login-card {
+   position: relative;
+   z-index: 1;
+   width: 100%;
+   max-width: 42rem;
+   background: var(--white);
+   border: 1px solid var(--g100);
+   border-radius: var(--r-lg);
+   box-shadow: var(--sh-lg);
+   padding: 3.5rem 3rem 2.5rem;
+}
+
+.admin-login-brand {
+   text-align: center;
+   margin-bottom: 2.4rem;
+}
+
+.admin-login-brand img {
+   width: 7.2rem;
+   height: 7.2rem;
+   object-fit: cover;
+   border-radius: 50%;
+   border: 3px solid var(--g200);
+   margin-bottom: 1.4rem;
+}
+
+.admin-login-eyebrow {
+   font-size: 1.2rem;
+   letter-spacing: 0.14em;
+   text-transform: uppercase;
+   color: var(--g600);
+   font-weight: 600;
+   margin: 0 0 0.6rem;
+}
+
+.admin-login-brand h1 {
+   font-family: var(--ff-display);
+   font-size: 2.8rem;
+   color: var(--g700);
+   margin: 0 0 0.8rem;
+   font-weight: 700;
+}
+
+.admin-login-lead {
+   font-size: 1.4rem;
+   color: var(--gray);
+   line-height: 1.6;
+   margin: 0;
+}
+
+.admin-login-error {
+   display: flex;
+   align-items: flex-start;
+   gap: 1rem;
+   background: #ffebee;
+   color: #c62828;
+   padding: 1.2rem 1.6rem;
+   border-radius: var(--r-sm);
+   border-left: 4px solid #d32f2f;
+   font-size: 1.4rem;
+   margin-bottom: 2rem;
+}
+
+.admin-login-form label {
+   display: block;
+   font-size: 1.35rem;
+   font-weight: 600;
+   color: var(--dark);
+   margin-bottom: 0.6rem;
+}
+
+.admin-login-form input {
+   width: 100%;
+   padding: 1.3rem 1.6rem;
+   border: 1px solid var(--g200);
+   border-radius: var(--r-sm);
+   font-size: 1.5rem;
+   color: var(--dark);
+   background: var(--off-white);
+   margin-bottom: 1.8rem;
+   outline: none;
+   transition: var(--tr-fast);
+}
+
+.admin-login-form input:focus {
+   border-color: var(--g400);
+   box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+   background: var(--white);
+}
+
+.admin-login-submit {
+   width: 100%;
+   margin-top: 0.4rem;
+   padding: 1.4rem 2rem;
+   border: none;
+   border-radius: var(--r-full);
+   background: var(--grad-green);
+   color: var(--white);
+   font-size: 1.55rem;
+   font-weight: 600;
+   cursor: pointer;
+   box-shadow: var(--sh-green);
+   transition: var(--tr);
+}
+
+.admin-login-submit:hover:not(:disabled) {
+   transform: translateY(-2px);
+   box-shadow: var(--sh-green-lg);
+}
+
+.admin-login-submit:disabled {
+   opacity: 0.7;
+   cursor: wait;
+}
+
+.admin-login-back {
+   display: block;
+   text-align: center;
+   margin-top: 2.2rem;
+   font-size: 1.35rem;
+   color: var(--g600);
+   font-weight: 500;
+   text-decoration: none;
+}
+
+.admin-login-back:hover {
+   color: var(--g700);
+   text-decoration: underline;
+}
+
 /* ===== Responsive Utilities ===== */
 @media (max-width: 991px) {
    .admin-header { padding: 1.5rem 5%; }

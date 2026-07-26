@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 
 export default function ContactPage() {
   const [name, setName] = useState('');
@@ -21,22 +20,33 @@ export default function ContactPage() {
     }
 
     try {
-      const { error } = await supabase
-        .from('contact_messages')
-        .insert([{ name, email, subject, message }]);
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message }),
+      });
 
-      if (error) throw error;
+      const data = await res.json().catch(() => ({}));
 
-      setFeedback({ type: 'success', text: 'Message sent successfully! We will get back to you soon.' });
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Failed to send your message.');
+      }
+
+      setFeedback({
+        type: 'success',
+        text: data.emailSent
+          ? 'Message sent successfully! We will get back to you soon.'
+          : 'Message saved. We will get back to you soon.',
+      });
       setName('');
       setEmail('');
       setSubject('');
       setMessage('');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Contact submission error:', err);
       setFeedback({
         type: 'error',
-        text: 'Failed to send your message. Please try again or call us directly.',
+        text: err?.message || 'Failed to send your message. Please try again or call us directly.',
       });
     } finally {
       setSubmitting(false);

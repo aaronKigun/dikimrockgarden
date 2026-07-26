@@ -3,7 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import { getServerSupabase, sendBookingNotification } from './mail.js';
+import { getServerSupabase, sendBookingNotification, sendContactNotification, sendBookingsListEmail } from './mail.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
@@ -16,7 +16,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const port = Number(process.env.PORT || (isProd ? 3000 : process.env.API_PORT || 3001));
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '15mb' }));
 
 app.post('/api/verify-payment', async (req, res) => {
   try {
@@ -104,6 +104,106 @@ app.post('/api/verify-payment', async (req, res) => {
     });
   } catch (error) {
     console.error('API Verification error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error: ' + (error?.message || 'unknown'),
+    });
+  }
+});
+
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, subject, message } = req.body || {};
+
+    if (!name?.trim() || !email?.trim() || !message?.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name, email, and message are required',
+      });
+    }
+
+    const payload = {
+      name: String(name).trim(),
+      email: String(email).trim(),
+      subject: subject ? String(subject).trim() : '',
+      message: String(message).trim(),
+    };
+
+    const supabase = getServerSupabase();
+    const { error: dbError } = await supabase.from('contact_messages').insert([payload]);
+
+    if (dbError) {
+      console.error('Contact message insert error:', dbError);
+      return res.status(500).json({
+        success: false,
+        message: 'Could not save message: ' + dbError.message,
+      });
+    }
+
+    let emailSent = false;
+    try {
+      const mailResult = await sendContactNotification(payload);
+      emailSent = Boolean(mailResult.sent);
+      if (!mailResult.sent) {
+        console.warn('Contact saved, but email was not sent:', mailResult.reason);
+      }
+    } catch (mailErr) {
+      console.error('Contact notification email failed:', mailErr);
+    }
+
+    return res.json({
+      success: true,
+      message: 'Message sent successfully!',
+      emailSent,
+    });
+  } catch (error) {
+    console.error('Contact API error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal Server Error: ' + (error?.message || 'unknown'),
+    });
+  }
+});
+
+app.post('/api/share-bookings', async (req, res) => {
+  try {
+    const { bookings, pdfBase64, filename, sharedBy } = req.body || {};
+
+    if (!Array.isArray(bookings) || bookings.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No bookings provided to share',
+      });
+    }
+
+    if (bookings.length > 500) {
+      return res.status(400).json({
+        success: false,
+        message: 'Too many bookings in one share (max 500). Narrow your search and try again.',
+      });
+    }
+
+    const mailResult = await sendBookingsListEmail({
+      bookings,
+      pdfBase64: pdfBase64 || null,
+      filename: filename || 'dikim-bookings.pdf',
+      sharedBy: sharedBy || '',
+    });
+
+    if (!mailResult.sent) {
+      return res.status(500).json({
+        success: false,
+        message: mailResult.reason || 'Failed to email bookings list',
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: `Bookings list emailed to ${mailResult.to || 'dikimrockgarden@gmail.com'}`,
+      emailId: mailResult.id,
+    });
+  } catch (error) {
+    console.error('Share bookings API error:', error);
     return res.status(500).json({
       success: false,
       message: 'Internal Server Error: ' + (error?.message || 'unknown'),

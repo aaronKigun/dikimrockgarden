@@ -25,9 +25,54 @@ interface GalleryItem {
   caption: string;
 }
 
+interface Feedback {
+  id: number;
+  guest_name: string;
+  message: string;
+  rating: number;
+  photo_path: string | null;
+}
+
+const FALLBACK_FEEDBACKS: Feedback[] = [
+  {
+    id: 1,
+    guest_name: 'Aaron Kigun',
+    message:
+      'If you are looking for a nice place to relax, look no further than Dikim Rock Garden. The combination of nature, VIP service, and standard security is unmatched.',
+    rating: 4.5,
+    photo_path: '/images/about.jpg',
+  },
+  {
+    id: 2,
+    guest_name: 'Andrew Peter',
+    message:
+      'If you are looking for an intoxicating picnic spot or private club environment, check out Dikim Rock Garden. Beautiful lawns and amazing staff!',
+    rating: 4.5,
+    photo_path: '/images/about.jpg',
+  },
+];
+
+function StarRating({ rating }: { rating: number }) {
+  const full = Math.floor(rating);
+  const half = rating - full >= 0.5 ? 1 : 0;
+  const empty = 5 - full - half;
+  return (
+    <div className="stars">
+      {Array.from({ length: full }).map((_, i) => (
+        <i key={`f-${i}`} className="fas fa-star"></i>
+      ))}
+      {half === 1 && <i className="fas fa-star-half-alt"></i>}
+      {Array.from({ length: empty }).map((_, i) => (
+        <i key={`e-${i}`} className="far fa-star"></i>
+      ))}
+    </div>
+  );
+}
+
 export default function HomePage() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>(FALLBACK_FEEDBACKS);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [loading, setLoading] = useState(true);
 
@@ -65,6 +110,18 @@ export default function HomePage() {
           console.warn('Gallery unavailable from Supabase; using fallbacks.', galleryError.message);
         } else if (galleryData) {
           setGallery(galleryData);
+        }
+
+        const { data: feedbackData, error: feedbackError } = await supabase
+          .from('feedbacks')
+          .select('*')
+          .eq('is_published', true)
+          .order('id', { ascending: false });
+
+        if (feedbackError) {
+          console.warn('Feedbacks unavailable from Supabase; using fallbacks.', feedbackError.message);
+        } else if (feedbackData && feedbackData.length > 0) {
+          setFeedbacks(feedbackData);
         }
       } catch (err) {
         console.warn('Landing page data fetch failed; using static fallbacks.', err);
@@ -315,48 +372,26 @@ export default function HomePage() {
           <Swiper
             modules={[Autoplay, Pagination]}
             grabCursor={true}
-            loop={true}
+            loop={feedbacks.length > 1}
             autoplay={{ delay: 7000, disableOnInteraction: false }}
             pagination={{ clickable: true }}
             className="review-slider"
+            key={feedbacks.map((f) => f.id).join('-')}
           >
-            <SwiperSlide className="slide">
-              <span className="big-quote">“</span>
-              <h2 className="heading">Hear From Our Guests</h2>
-              <p>If you are looking for a nice place to relax, look no further than Dikim Rock Garden. The combination of nature, VIP service, and standard security is unmatched.</p>
-              <div className="user">
-                <img src="/images/about.jpg" alt="Aaron Kigun" />
-                <div className="user-info">
-                  <h3>Aaron Kigun</h3>
-                  <div className="stars">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star-half-alt"></i>
+            {feedbacks.map((fb) => (
+              <SwiperSlide className="slide" key={fb.id}>
+                <span className="big-quote">“</span>
+                <h2 className="heading">Hear From Our Guests</h2>
+                <p>{fb.message}</p>
+                <div className="user">
+                  <img src={fb.photo_path || '/images/about.jpg'} alt={fb.guest_name} />
+                  <div className="user-info">
+                    <h3>{fb.guest_name}</h3>
+                    <StarRating rating={Number(fb.rating) || 5} />
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide className="slide">
-              <span className="big-quote">“</span>
-              <h2 className="heading">Hear From Our Guests</h2>
-              <p>If you are looking for an intoxicating picnic spot or private club environment, check out Dikim Rock Garden. Beautiful lawns and amazing staff!</p>
-              <div className="user">
-                <img src="/images/about.jpg" alt="Andrew Peter" />
-                <div className="user-info">
-                  <h3>Andrew Peter</h3>
-                  <div className="stars">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star-half-alt"></i>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </section>

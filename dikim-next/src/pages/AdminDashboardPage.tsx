@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
+import { downloadBookingsPdf, buildBookingsPdf } from '@/lib/downloadBookingsPdf';
 import '@/styles/admin.css';
 
 interface Transaction {
@@ -29,24 +30,53 @@ interface GalleryItem {
   caption: string;
 }
 
+interface BoutiqueItem {
+  id: number;
+  title: string;
+  image_path: string;
+}
+
+interface Feedback {
+  id: number;
+  guest_name: string;
+  message: string;
+  rating: number;
+  photo_path: string | null;
+  is_published: boolean;
+}
+
+interface ContactMessage {
+  id: number;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  created_at: string;
+}
+
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
   const [adminUser, setAdminUser] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'overview' | 'bookings' | 'rooms' | 'gallery'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'bookings' | 'rooms' | 'gallery' | 'boutique' | 'feedbacks' | 'messages'>('overview');
   
   // Lists data states
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
-  const [stats, setStats] = useState({ total_revenue: 0, total_bookings: 0, total_rooms: 0, total_gallery: 0 });
+  const [boutique, setBoutique] = useState<BoutiqueItem[]>([]);
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
+  const [stats, setStats] = useState({ total_revenue: 0, total_bookings: 0, total_rooms: 0, total_gallery: 0, total_boutique: 0, total_feedbacks: 0, total_messages: 0 });
 
   // UI state controllers
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [toast, setToast] = useState<{ message: string; isError: boolean } | null>(null);
+  const [sharingBookings, setSharingBookings] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   // Modal forms controller states
-  const [activeModal, setActiveModal] = useState<'addRoom' | 'editRoom' | 'addGallery' | null>(null);
+  const [activeModal, setActiveModal] = useState<'addRoom' | 'editRoom' | 'addGallery' | 'addBoutique' | 'editBoutique' | 'addFeedback' | 'editFeedback' | null>(null);
 
   // Forms inputs states
   const [roomName, setRoomName] = useState('');
@@ -62,6 +92,25 @@ export default function AdminDashboardPage() {
 
   const [galleryCaption, setGalleryCaption] = useState('');
   const [galleryImageFile, setGalleryImageFile] = useState<File | null>(null);
+
+  const [boutiqueTitle, setBoutiqueTitle] = useState('');
+  const [boutiqueImageFile, setBoutiqueImageFile] = useState<File | null>(null);
+  const [editBoutiqueId, setEditBoutiqueId] = useState<number | null>(null);
+  const [editBoutiqueTitle, setEditBoutiqueTitle] = useState('');
+  const [editBoutiqueImageFile, setEditBoutiqueImageFile] = useState<File | null>(null);
+
+  const [feedbackName, setFeedbackName] = useState('');
+  const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [feedbackRating, setFeedbackRating] = useState('5');
+  const [feedbackPublished, setFeedbackPublished] = useState(true);
+  const [feedbackImageFile, setFeedbackImageFile] = useState<File | null>(null);
+  const [editFeedbackId, setEditFeedbackId] = useState<number | null>(null);
+  const [editFeedbackName, setEditFeedbackName] = useState('');
+  const [editFeedbackMessage, setEditFeedbackMessage] = useState('');
+  const [editFeedbackRating, setEditFeedbackRating] = useState('5');
+  const [editFeedbackPublished, setEditFeedbackPublished] = useState(true);
+  const [editFeedbackImageFile, setEditFeedbackImageFile] = useState<File | null>(null);
+  const [editFeedbackPhotoPath, setEditFeedbackPhotoPath] = useState('/images/about.jpg');
 
   // Session verification and initial loaders
   useEffect(() => {
@@ -129,13 +178,48 @@ export default function AdminDashboardPage() {
 
       if (galleryErr) throw galleryErr;
 
+      // 4. Boutique (optional until SQL is run)
+      const { data: boutiqueData, error: boutiqueErr } = await supabase
+        .from('boutique_items')
+        .select('*')
+        .order('id', { ascending: true });
+
+      if (boutiqueErr) {
+        console.warn('Boutique table unavailable:', boutiqueErr.message);
+      }
+
+      // 5. Feedbacks (optional until SQL is run)
+      const { data: feedbackData, error: feedbackErr } = await supabase
+        .from('feedbacks')
+        .select('*')
+        .order('id', { ascending: false });
+
+      if (feedbackErr) {
+        console.warn('Feedbacks table unavailable:', feedbackErr.message);
+      }
+
+      const { data: messagesData, error: messagesErr } = await supabase
+        .from('contact_messages')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (messagesErr) {
+        console.warn('Contact messages unavailable:', messagesErr.message);
+      }
+
       // Set data lists
       const listTx = txData || [];
       const listRooms = roomsData || [];
       const listGallery = galleryData || [];
+      const listBoutique = boutiqueData || [];
+      const listFeedbacks = feedbackData || [];
+      const listMessages = messagesData || [];
       setTransactions(listTx);
       setRooms(listRooms);
       setGallery(listGallery);
+      setBoutique(listBoutique);
+      setFeedbacks(listFeedbacks);
+      setContactMessages(listMessages);
 
       // Compute statistics summary indicators
       const verifiedTx = listTx.filter((t: any) => t.status === 'success');
@@ -145,7 +229,10 @@ export default function AdminDashboardPage() {
         total_revenue: totalRev,
         total_bookings: verifiedTx.length,
         total_rooms: listRooms.length,
-        total_gallery: listGallery.length
+        total_gallery: listGallery.length,
+        total_boutique: listBoutique.length,
+        total_feedbacks: listFeedbacks.length,
+        total_messages: listMessages.length,
       });
     } catch (err: any) {
       console.error('Failed to load dashboard data:', err);
@@ -156,7 +243,7 @@ export default function AdminDashboardPage() {
   };
 
   // Helper to upload images to Supabase Storage bucket 'dikim-images'
-  const uploadImageToStorage = async (file: File, folder: 'rooms' | 'gallery'): Promise<string> => {
+  const uploadImageToStorage = async (file: File, folder: 'rooms' | 'gallery' | 'boutique' | 'feedbacks'): Promise<string> => {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
     const filePath = `${folder}/${fileName}`;
@@ -323,6 +410,161 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const handleAddBoutique = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!boutiqueTitle || !boutiqueImageFile) {
+      triggerToast('Please add a title and photo.', true);
+      return;
+    }
+    try {
+      const imageUrl = await uploadImageToStorage(boutiqueImageFile, 'boutique');
+      const { error } = await supabase.from('boutique_items').insert([
+        { title: boutiqueTitle, image_path: imageUrl },
+      ]);
+      if (error) throw error;
+      triggerToast('Boutique item added!');
+      setActiveModal(null);
+      setBoutiqueTitle('');
+      setBoutiqueImageFile(null);
+      await loadDashboardData();
+    } catch (err: any) {
+      triggerToast(err.message || 'Failed to add boutique item.', true);
+    }
+  };
+
+  const triggerEditBoutique = (item: BoutiqueItem) => {
+    setEditBoutiqueId(item.id);
+    setEditBoutiqueTitle(item.title);
+    setEditBoutiqueImageFile(null);
+    setActiveModal('editBoutique');
+  };
+
+  const handleEditBoutiqueSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editBoutiqueId || !editBoutiqueTitle) return;
+    try {
+      const payload: { title: string; image_path?: string } = { title: editBoutiqueTitle };
+      if (editBoutiqueImageFile) {
+        payload.image_path = await uploadImageToStorage(editBoutiqueImageFile, 'boutique');
+      }
+      const { error } = await supabase.from('boutique_items').update(payload).eq('id', editBoutiqueId);
+      if (error) throw error;
+      triggerToast('Boutique item updated.');
+      setActiveModal(null);
+      await loadDashboardData();
+    } catch (err: any) {
+      triggerToast(err.message || 'Failed to update boutique item.', true);
+    }
+  };
+
+  const handleDeleteBoutique = async (id: number, title: string) => {
+    if (!confirm(`Remove boutique item "${title}"?`)) return;
+    try {
+      const { error } = await supabase.from('boutique_items').delete().eq('id', id);
+      if (error) throw error;
+      triggerToast('Boutique item removed.');
+      await loadDashboardData();
+    } catch (err: any) {
+      triggerToast('Failed to delete boutique item: ' + err.message, true);
+    }
+  };
+
+  const handleAddFeedback = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!feedbackName || !feedbackMessage) {
+      triggerToast('Please enter guest name and message.', true);
+      return;
+    }
+    try {
+      let photoPath = '/images/about.jpg';
+      if (feedbackImageFile) {
+        photoPath = await uploadImageToStorage(feedbackImageFile, 'feedbacks');
+      }
+      const { error } = await supabase.from('feedbacks').insert([
+        {
+          guest_name: feedbackName,
+          message: feedbackMessage,
+          rating: parseFloat(feedbackRating || '5'),
+          photo_path: photoPath,
+          is_published: feedbackPublished,
+        },
+      ]);
+      if (error) throw error;
+      triggerToast('Feedback added to homepage reviews!');
+      setActiveModal(null);
+      setFeedbackName('');
+      setFeedbackMessage('');
+      setFeedbackRating('5');
+      setFeedbackPublished(true);
+      setFeedbackImageFile(null);
+      await loadDashboardData();
+    } catch (err: any) {
+      triggerToast(err.message || 'Failed to add feedback.', true);
+    }
+  };
+
+  const triggerEditFeedback = (fb: Feedback) => {
+    setEditFeedbackId(fb.id);
+    setEditFeedbackName(fb.guest_name);
+    setEditFeedbackMessage(fb.message);
+    setEditFeedbackRating(String(fb.rating));
+    setEditFeedbackPublished(fb.is_published);
+    setEditFeedbackPhotoPath(fb.photo_path || '/images/about.jpg');
+    setEditFeedbackImageFile(null);
+    setActiveModal('editFeedback');
+  };
+
+  const handleEditFeedbackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editFeedbackId || !editFeedbackName || !editFeedbackMessage) return;
+    try {
+      let photoPath = editFeedbackPhotoPath;
+      if (editFeedbackImageFile) {
+        photoPath = await uploadImageToStorage(editFeedbackImageFile, 'feedbacks');
+      }
+      const { error } = await supabase
+        .from('feedbacks')
+        .update({
+          guest_name: editFeedbackName,
+          message: editFeedbackMessage,
+          rating: parseFloat(editFeedbackRating || '5'),
+          photo_path: photoPath,
+          is_published: editFeedbackPublished,
+        })
+        .eq('id', editFeedbackId);
+      if (error) throw error;
+      triggerToast('Feedback updated.');
+      setActiveModal(null);
+      await loadDashboardData();
+    } catch (err: any) {
+      triggerToast(err.message || 'Failed to update feedback.', true);
+    }
+  };
+
+  const handleDeleteFeedback = async (id: number, name: string) => {
+    if (!confirm(`Delete feedback from "${name}"?`)) return;
+    try {
+      const { error } = await supabase.from('feedbacks').delete().eq('id', id);
+      if (error) throw error;
+      triggerToast('Feedback removed.');
+      await loadDashboardData();
+    } catch (err: any) {
+      triggerToast('Failed to delete feedback: ' + err.message, true);
+    }
+  };
+
+  const handleDeleteContactMessage = async (id: number) => {
+    if (!confirm('Delete this contact message?')) return;
+    try {
+      const { error } = await supabase.from('contact_messages').delete().eq('id', id);
+      if (error) throw error;
+      triggerToast('Message deleted.');
+      await loadDashboardData();
+    } catch (err: any) {
+      triggerToast('Failed to delete message: ' + err.message, true);
+    }
+  };
+
   // Booking transactions search filter logic
   const filteredTransactions = transactions.filter(tx => {
     const term = searchQuery.toLowerCase();
@@ -335,57 +577,54 @@ export default function AdminDashboardPage() {
     );
   });
 
-  const escapeCsv = (value: unknown) => {
-    const text = value == null ? '' : String(value);
-    if (/[",\n\r]/.test(text)) {
-      return `"${text.replace(/"/g, '""')}"`;
-    }
-    return text;
-  };
-
-  const handleDownloadBookingsCsv = () => {
+  const handleDownloadBookingsPdf = async () => {
     if (filteredTransactions.length === 0) {
       triggerToast('No bookings to download.', true);
       return;
     }
 
-    const headers = [
-      'ID',
-      'Guest Name',
-      'Email',
-      'Room',
-      'Amount (NGN)',
-      'Arrival Date',
-      'Payment Reference',
-      'Status',
-      'Created At',
-    ];
+    setDownloadingPdf(true);
+    try {
+      await downloadBookingsPdf(filteredTransactions);
+      triggerToast(`Downloaded PDF with ${filteredTransactions.length} booking(s).`);
+    } catch (err: any) {
+      console.error('PDF download failed:', err);
+      triggerToast(err?.message || 'Failed to generate PDF.', true);
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
 
-    const rows = filteredTransactions.map((tx) => [
-      tx.id,
-      tx.name,
-      tx.email,
-      tx.room,
-      tx.amount,
-      tx.arrival_date || '',
-      tx.reference,
-      tx.status,
-      new Date(tx.created_at).toLocaleString(),
-    ]);
+  const handleShareBookingsEmail = async () => {
+    if (filteredTransactions.length === 0) {
+      triggerToast('No bookings to share.', true);
+      return;
+    }
 
-    const csv = [headers, ...rows]
-      .map((row) => row.map(escapeCsv).join(','))
-      .join('\r\n');
-
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    const stamp = new Date().toISOString().slice(0, 10);
-    link.href = url;
-    link.download = `dikim-bookings-${stamp}.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
-    triggerToast(`Downloaded ${filteredTransactions.length} booking(s).`);
+    setSharingBookings(true);
+    try {
+      const { filename, base64 } = await buildBookingsPdf(filteredTransactions);
+      const res = await fetch('/api/share-bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bookings: filteredTransactions,
+          pdfBase64: base64,
+          filename,
+          sharedBy: adminUser?.email || '',
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Failed to share bookings list.');
+      }
+      triggerToast(data.message || 'Bookings list emailed to dikimrockgarden@gmail.com');
+    } catch (err: any) {
+      console.error('Share bookings failed:', err);
+      triggerToast(err?.message || 'Failed to email bookings list.', true);
+    } finally {
+      setSharingBookings(false);
+    }
   };
 
   if (!adminUser) {
@@ -453,6 +692,24 @@ export default function AdminDashboardPage() {
           >
             <i className="fas fa-images"></i> Photo Gallery
           </button>
+          <button
+            className={`admin-tab-btn ${activeTab === 'boutique' ? 'active' : ''}`}
+            onClick={() => setActiveTab('boutique')}
+          >
+            <i className="fas fa-bag-shopping"></i> Boutique
+          </button>
+          <button
+            className={`admin-tab-btn ${activeTab === 'feedbacks' ? 'active' : ''}`}
+            onClick={() => setActiveTab('feedbacks')}
+          >
+            <i className="fas fa-comments"></i> Feedbacks
+          </button>
+          <button
+            className={`admin-tab-btn ${activeTab === 'messages' ? 'active' : ''}`}
+            onClick={() => setActiveTab('messages')}
+          >
+            <i className="fas fa-envelope"></i> Messages
+          </button>
         </nav>
 
         {/* TAB 1: OVERVIEW */}
@@ -487,6 +744,27 @@ export default function AdminDashboardPage() {
                 </div>
                 <div className="stat-icon"><i className="fas fa-image"></i></div>
               </div>
+              <div className="stat-card">
+                <div className="stat-info">
+                  <h3>Boutique Items</h3>
+                  <div className="stat-value">{stats.total_boutique}</div>
+                </div>
+                <div className="stat-icon"><i className="fas fa-bag-shopping"></i></div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-info">
+                  <h3>Guest Feedbacks</h3>
+                  <div className="stat-value">{stats.total_feedbacks}</div>
+                </div>
+                <div className="stat-icon"><i className="fas fa-comments"></i></div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-info">
+                  <h3>Contact Messages</h3>
+                  <div className="stat-value">{stats.total_messages}</div>
+                </div>
+                <div className="stat-icon"><i className="fas fa-envelope"></i></div>
+              </div>
             </div>
 
             <div className="panel-card">
@@ -502,6 +780,7 @@ export default function AdminDashboardPage() {
                      <tr>
                         <th>Guest Name</th>
                         <th>Room Type</th>
+                        <th>Arrival</th>
                         <th>Price Paid</th>
                         <th>Paystack Reference</th>
                         <th>Status</th>
@@ -510,14 +789,15 @@ export default function AdminDashboardPage() {
                   </thead>
                   <tbody>
                      {loading ? (
-                       <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
+                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
                      ) : transactions.length === 0 ? (
-                       <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions found.</td></tr>
+                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions found.</td></tr>
                      ) : (
                        transactions.slice(0, 5).map(tx => (
                          <tr key={tx.id}>
                            <td><strong>{tx.name}</strong><br /><span style={{ fontSize: '1.2rem', color: 'var(--gray)' }}>{tx.email}</span></td>
                            <td>{tx.room}</td>
+                           <td>{tx.arrival_date ? new Date(tx.arrival_date).toLocaleDateString() : '—'}</td>
                            <td><strong>₦{tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></td>
                            <td><code style={{ fontFamily: 'monospace', fontSize: '1.3rem' }}>{tx.reference}</code></td>
                            <td><span className={`badge ${tx.status === 'success' ? 'success' : 'failed'}`}>{tx.status}</span></td>
@@ -551,11 +831,23 @@ export default function AdminDashboardPage() {
                   <button
                     type="button"
                     className="btn-primary-sm"
-                    onClick={handleDownloadBookingsCsv}
-                    disabled={filteredTransactions.length === 0}
-                    title="Download the current bookings list as CSV"
+                    onClick={handleDownloadBookingsPdf}
+                    disabled={filteredTransactions.length === 0 || downloadingPdf}
+                    title="Download bookings as a branded PDF"
                   >
-                    <i className="fas fa-download"></i> Download CSV
+                    <i className="fas fa-file-pdf"></i>{' '}
+                    {downloadingPdf ? 'Preparing…' : 'Download PDF'}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-primary-sm"
+                    onClick={handleShareBookingsEmail}
+                    disabled={filteredTransactions.length === 0 || sharingBookings}
+                    title="Email this bookings list to dikimrockgarden@gmail.com"
+                    style={{ background: 'var(--grad-dark)' }}
+                  >
+                    <i className="fas fa-share-nodes"></i>{' '}
+                    {sharingBookings ? 'Sending…' : 'Email to Dikim'}
                   </button>
                 </div>
               </div>
@@ -566,6 +858,7 @@ export default function AdminDashboardPage() {
                         <th>ID</th>
                         <th>Guest Info</th>
                         <th>Booked Room</th>
+                        <th>Arrival Date</th>
                         <th>Amount</th>
                         <th>Payment Reference</th>
                         <th>Payment Status</th>
@@ -574,9 +867,9 @@ export default function AdminDashboardPage() {
                   </thead>
                   <tbody>
                      {loading ? (
-                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
+                       <tr><td colSpan={8} style={{ textAlign: 'center', padding: '3rem' }}>Querying database...</td></tr>
                      ) : filteredTransactions.length === 0 ? (
-                       <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions match search search query.</td></tr>
+                       <tr><td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>No transactions match search query.</td></tr>
                      ) : (
                        filteredTransactions.map(tx => (
                          <tr key={tx.id}>
@@ -586,6 +879,7 @@ export default function AdminDashboardPage() {
                              <a href={`mailto:${tx.email}`} style={{ fontSize: '1.2rem', color: 'var(--g600)' }}>{tx.email}</a>
                            </td>
                            <td>{tx.room}</td>
+                           <td>{tx.arrival_date ? new Date(tx.arrival_date).toLocaleDateString() : '—'}</td>
                            <td><strong>₦{tx.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></td>
                            <td><code style={{ fontFamily: 'monospace', fontSize: '1.3rem' }}>{tx.reference}</code></td>
                            <td><span className={`badge ${tx.status === 'success' ? 'success' : 'failed'}`}>{tx.status}</span></td>
@@ -686,6 +980,189 @@ export default function AdminDashboardPage() {
           </section>
         )}
 
+        {/* TAB 5: BOUTIQUE */}
+        {activeTab === 'boutique' && (
+          <section id="boutique" className="admin-panel active">
+            <div className="panel-card">
+              <div className="panel-card-header">
+                <h2>Manage Boutique</h2>
+                <button
+                  className="btn-primary-sm"
+                  onClick={() => {
+                    setBoutiqueTitle('');
+                    setBoutiqueImageFile(null);
+                    setActiveModal('addBoutique');
+                  }}
+                >
+                  <i className="fas fa-plus"></i> Add Boutique Item
+                </button>
+              </div>
+              <div className="admin-grid">
+                {loading ? (
+                  <div style={{ gridColumn: '1 / -1', textAlign: 'center', color: 'var(--gray)', padding: '5rem 0' }}>Loading boutique…</div>
+                ) : boutique.length === 0 ? (
+                  <div style={{ gridColumn: '1 / -1', textAlign: 'center', color: 'var(--gray)', padding: '5rem 0' }}>
+                    No boutique items yet. Run setup_boutique_feedbacks.sql in Supabase, then add or edit items here.
+                  </div>
+                ) : (
+                  boutique.map((item) => (
+                    <div className="admin-grid-card" key={item.id}>
+                      <img src={item.image_path} alt={item.title} className="card-img" style={{ height: '22rem' }} />
+                      <div className="card-body">
+                        <h3>{item.title}</h3>
+                      </div>
+                      <div className="card-actions">
+                        <button className="btn-edit" onClick={() => triggerEditBoutique(item)}>
+                          <i className="fas fa-edit"></i> Edit
+                        </button>
+                        <button className="btn-delete" onClick={() => handleDeleteBoutique(item.id, item.title)}>
+                          <i className="fas fa-trash-alt"></i> Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* TAB 6: FEEDBACKS */}
+        {activeTab === 'feedbacks' && (
+          <section id="feedbacks" className="admin-panel active">
+            <div className="panel-card">
+              <div className="panel-card-header">
+                <h2>Homepage Guest Feedbacks</h2>
+                <button
+                  className="btn-primary-sm"
+                  onClick={() => {
+                    setFeedbackName('');
+                    setFeedbackMessage('');
+                    setFeedbackRating('5');
+                    setFeedbackPublished(true);
+                    setFeedbackImageFile(null);
+                    setActiveModal('addFeedback');
+                  }}
+                >
+                  <i className="fas fa-plus"></i> Add Feedback
+                </button>
+              </div>
+              <div className="table-responsive">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Guest</th>
+                      <th>Message</th>
+                      <th>Rating</th>
+                      <th>Published</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem' }}>Loading feedbacks…</td></tr>
+                    ) : feedbacks.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>
+                          No feedbacks yet. Run setup_boutique_feedbacks.sql, then add reviews here to show on the homepage.
+                        </td>
+                      </tr>
+                    ) : (
+                      feedbacks.map((fb) => (
+                        <tr key={fb.id}>
+                          <td>
+                            <strong>{fb.guest_name}</strong>
+                            <br />
+                            <img
+                              src={fb.photo_path || '/images/about.jpg'}
+                              alt=""
+                              style={{ width: '4rem', height: '4rem', borderRadius: '50%', objectFit: 'cover', marginTop: '0.6rem' }}
+                            />
+                          </td>
+                          <td style={{ maxWidth: '36rem' }}>{fb.message}</td>
+                          <td>{Number(fb.rating).toFixed(1)} ★</td>
+                          <td>
+                            <span className={`badge ${fb.is_published ? 'success' : 'failed'}`}>
+                              {fb.is_published ? 'Live' : 'Hidden'}
+                            </span>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
+                              <button className="btn-edit" onClick={() => triggerEditFeedback(fb)}>
+                                <i className="fas fa-edit"></i> Edit
+                              </button>
+                              <button className="btn-delete" onClick={() => handleDeleteFeedback(fb.id, fb.guest_name)}>
+                                <i className="fas fa-trash-alt"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {activeTab === 'messages' && (
+          <section id="messages" className="admin-panel active">
+            <div className="panel-card">
+              <div className="panel-card-header">
+                <h2>Contact Form Messages</h2>
+                <p style={{ margin: 0, fontSize: '1.35rem', color: 'var(--gray)' }}>
+                  Also emailed to dikimrockgarden@gmail.com when the API is running.
+                </p>
+              </div>
+              <div className="table-responsive">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>From</th>
+                      <th>Subject</th>
+                      <th>Message</th>
+                      <th>Received</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem' }}>Loading messages…</td></tr>
+                    ) : contactMessages.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray)' }}>
+                          No contact messages yet.
+                        </td>
+                      </tr>
+                    ) : (
+                      contactMessages.map((msg) => (
+                        <tr key={msg.id}>
+                          <td>
+                            <strong>{msg.name}</strong>
+                            <br />
+                            <a href={`mailto:${msg.email}`} style={{ fontSize: '1.2rem', color: 'var(--g600)' }}>
+                              {msg.email}
+                            </a>
+                          </td>
+                          <td>{msg.subject || '—'}</td>
+                          <td style={{ maxWidth: '36rem', whiteSpace: 'pre-wrap' }}>{msg.message}</td>
+                          <td>{new Date(msg.created_at).toLocaleString()}</td>
+                          <td>
+                            <button className="btn-delete" onClick={() => handleDeleteContactMessage(msg.id)}>
+                              <i className="fas fa-trash-alt"></i> Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        )}
+
       </main>
 
       {/* ===== MODAL 1: ADD ROOM ===== */}
@@ -781,6 +1258,142 @@ export default function AdminDashboardPage() {
                 <div className="form-actions">
                   <button type="button" className="btn-secondary" onClick={() => setActiveModal(null)}>Cancel</button>
                   <button type="submit" className="btn-submit">Upload Photo</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeModal === 'addBoutique' && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Add Boutique Item</h3>
+              <button className="btn-close" onClick={() => setActiveModal(null)}><i className="fas fa-times"></i></button>
+            </div>
+            <div className="modal-body">
+              <form onSubmit={handleAddBoutique}>
+                <div className="form-group">
+                  <label htmlFor="boutique_title">Title</label>
+                  <input type="text" id="boutique_title" value={boutiqueTitle} onChange={(e) => setBoutiqueTitle(e.target.value)} placeholder="e.g., Summer Dress" required />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="boutique_image">Photo</label>
+                  <input type="file" id="boutique_image" onChange={(e) => setBoutiqueImageFile(e.target.files?.[0] || null)} accept="image/*" required />
+                </div>
+                <div className="form-actions">
+                  <button type="button" className="btn-secondary" onClick={() => setActiveModal(null)}>Cancel</button>
+                  <button type="submit" className="btn-submit">Add Item</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeModal === 'editBoutique' && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Edit Boutique Item</h3>
+              <button className="btn-close" onClick={() => setActiveModal(null)}><i className="fas fa-times"></i></button>
+            </div>
+            <div className="modal-body">
+              <form onSubmit={handleEditBoutiqueSubmit}>
+                <div className="form-group">
+                  <label htmlFor="edit_boutique_title">Title</label>
+                  <input type="text" id="edit_boutique_title" value={editBoutiqueTitle} onChange={(e) => setEditBoutiqueTitle(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="edit_boutique_image">Change Photo (optional)</label>
+                  <input type="file" id="edit_boutique_image" onChange={(e) => setEditBoutiqueImageFile(e.target.files?.[0] || null)} accept="image/*" />
+                </div>
+                <div className="form-actions">
+                  <button type="button" className="btn-secondary" onClick={() => setActiveModal(null)}>Cancel</button>
+                  <button type="submit" className="btn-submit">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeModal === 'addFeedback' && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Add Guest Feedback</h3>
+              <button className="btn-close" onClick={() => setActiveModal(null)}><i className="fas fa-times"></i></button>
+            </div>
+            <div className="modal-body">
+              <form onSubmit={handleAddFeedback}>
+                <div className="form-group">
+                  <label htmlFor="feedback_name">Guest Name</label>
+                  <input type="text" id="feedback_name" value={feedbackName} onChange={(e) => setFeedbackName(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="feedback_message">Review Message</label>
+                  <textarea id="feedback_message" value={feedbackMessage} onChange={(e) => setFeedbackMessage(e.target.value)} rows={4} required style={{ width: '100%', font: 'inherit', padding: '1rem', borderRadius: '0.8rem', border: '1px solid var(--g200)' }} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="feedback_rating">Rating (1–5)</label>
+                  <input type="number" id="feedback_rating" value={feedbackRating} onChange={(e) => setFeedbackRating(e.target.value)} min="1" max="5" step="0.5" required />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="feedback_photo">Guest Photo (optional)</label>
+                  <input type="file" id="feedback_photo" onChange={(e) => setFeedbackImageFile(e.target.files?.[0] || null)} accept="image/*" />
+                </div>
+                <div className="form-group">
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <input type="checkbox" checked={feedbackPublished} onChange={(e) => setFeedbackPublished(e.target.checked)} />
+                    Show on homepage
+                  </label>
+                </div>
+                <div className="form-actions">
+                  <button type="button" className="btn-secondary" onClick={() => setActiveModal(null)}>Cancel</button>
+                  <button type="submit" className="btn-submit">Add Feedback</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeModal === 'editFeedback' && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Edit Guest Feedback</h3>
+              <button className="btn-close" onClick={() => setActiveModal(null)}><i className="fas fa-times"></i></button>
+            </div>
+            <div className="modal-body">
+              <form onSubmit={handleEditFeedbackSubmit}>
+                <div className="form-group">
+                  <label htmlFor="edit_feedback_name">Guest Name</label>
+                  <input type="text" id="edit_feedback_name" value={editFeedbackName} onChange={(e) => setEditFeedbackName(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="edit_feedback_message">Review Message</label>
+                  <textarea id="edit_feedback_message" value={editFeedbackMessage} onChange={(e) => setEditFeedbackMessage(e.target.value)} rows={4} required style={{ width: '100%', font: 'inherit', padding: '1rem', borderRadius: '0.8rem', border: '1px solid var(--g200)' }} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="edit_feedback_rating">Rating (1–5)</label>
+                  <input type="number" id="edit_feedback_rating" value={editFeedbackRating} onChange={(e) => setEditFeedbackRating(e.target.value)} min="1" max="5" step="0.5" required />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="edit_feedback_photo">Change Photo (optional)</label>
+                  <input type="file" id="edit_feedback_photo" onChange={(e) => setEditFeedbackImageFile(e.target.files?.[0] || null)} accept="image/*" />
+                </div>
+                <div className="form-group">
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <input type="checkbox" checked={editFeedbackPublished} onChange={(e) => setEditFeedbackPublished(e.target.checked)} />
+                    Show on homepage
+                  </label>
+                </div>
+                <div className="form-actions">
+                  <button type="button" className="btn-secondary" onClick={() => setActiveModal(null)}>Cancel</button>
+                  <button type="submit" className="btn-submit">Save Changes</button>
                 </div>
               </form>
             </div>
