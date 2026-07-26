@@ -11,6 +11,7 @@ interface Transaction {
   amount: number;
   reference: string;
   status: string;
+  arrival_date?: string | null;
   created_at: string;
 }
 
@@ -334,6 +335,59 @@ export default function AdminDashboardPage() {
     );
   });
 
+  const escapeCsv = (value: unknown) => {
+    const text = value == null ? '' : String(value);
+    if (/[",\n\r]/.test(text)) {
+      return `"${text.replace(/"/g, '""')}"`;
+    }
+    return text;
+  };
+
+  const handleDownloadBookingsCsv = () => {
+    if (filteredTransactions.length === 0) {
+      triggerToast('No bookings to download.', true);
+      return;
+    }
+
+    const headers = [
+      'ID',
+      'Guest Name',
+      'Email',
+      'Room',
+      'Amount (NGN)',
+      'Arrival Date',
+      'Payment Reference',
+      'Status',
+      'Created At',
+    ];
+
+    const rows = filteredTransactions.map((tx) => [
+      tx.id,
+      tx.name,
+      tx.email,
+      tx.room,
+      tx.amount,
+      tx.arrival_date || '',
+      tx.reference,
+      tx.status,
+      new Date(tx.created_at).toLocaleString(),
+    ]);
+
+    const csv = [headers, ...rows]
+      .map((row) => row.map(escapeCsv).join(','))
+      .join('\r\n');
+
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0, 10);
+    link.href = url;
+    link.download = `dikim-bookings-${stamp}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    triggerToast(`Downloaded ${filteredTransactions.length} booking(s).`);
+  };
+
   if (!adminUser) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', fontSize: '1.8rem', background: 'var(--off-white)', color: 'var(--gray)' }}>
@@ -484,14 +538,25 @@ export default function AdminDashboardPage() {
             <div className="panel-card">
               <div className="panel-card-header">
                 <h2>All Room Bookings &amp; Transactions</h2>
-                <div className="search-bar">
-                  <i className="fas fa-search"></i>
-                  <input 
-                    type="text" 
-                    placeholder="Search guests, rooms, references..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+                <div className="bookings-toolbar">
+                  <div className="search-bar">
+                    <i className="fas fa-search"></i>
+                    <input 
+                      type="text" 
+                      placeholder="Search guests, rooms, references..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-primary-sm"
+                    onClick={handleDownloadBookingsCsv}
+                    disabled={filteredTransactions.length === 0}
+                    title="Download the current bookings list as CSV"
+                  >
+                    <i className="fas fa-download"></i> Download CSV
+                  </button>
                 </div>
               </div>
               <div className="table-responsive">
