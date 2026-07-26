@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function ContactPage() {
   const [name, setName] = useState('');
@@ -19,24 +20,40 @@ export default function ContactPage() {
       return;
     }
 
+    const payload = { name, email, subject, message };
+
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, subject, message }),
-      });
+      // Prefer API (saves + emails). Fall back to Supabase if Node API is offline.
+      let apiOk = false;
+      let emailSent = false;
 
-      const data = await res.json().catch(() => ({}));
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.success) {
+          apiOk = true;
+          emailSent = Boolean(data.emailSent);
+        } else {
+          console.warn('Contact API failed:', data.message || res.status);
+        }
+      } catch (apiErr) {
+        console.warn('Contact API unreachable:', apiErr);
+      }
 
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Failed to send your message.');
+      if (!apiOk) {
+        const { error } = await supabase.from('contact_messages').insert([payload]);
+        if (error) throw new Error(error.message || 'Could not save your message.');
       }
 
       setFeedback({
         type: 'success',
-        text: data.emailSent
+        text: emailSent
           ? 'Message sent successfully! We will get back to you soon.'
-          : 'Message saved. We will get back to you soon.',
+          : 'Message received! We will get back to you soon.',
       });
       setName('');
       setEmail('');

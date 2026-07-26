@@ -616,7 +616,12 @@ export default function AdminDashboardPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Failed to share bookings list.');
+        const detail =
+          data.message ||
+          (res.status === 404
+            ? 'API not found — Node app may not be attached to this domain.'
+            : `Share failed (HTTP ${res.status}).`);
+        throw new Error(detail);
       }
       triggerToast(data.message || 'Bookings list emailed to dikimrockgarden@gmail.com');
     } catch (err: any) {

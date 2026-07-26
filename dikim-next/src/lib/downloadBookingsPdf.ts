@@ -182,7 +182,8 @@ export async function buildBookingsPdf(bookings: BookingPdfRow[]) {
     doc.text(card.value, x + 6, cardY + 12.5);
   });
 
-  // Table
+  // Table — widths must fit landscape usable area (~269mm)
+  const tableWidth = pageWidth - marginX * 2;
   const body = bookings.map((tx, index) => [
     String(index + 1),
     tx.name,
@@ -200,24 +201,26 @@ export async function buildBookingsPdf(bookings: BookingPdfRow[]) {
     head: [['#', 'Guest', 'Email', 'Room', 'Arrival', 'Amount', 'Reference', 'Status', 'Booked']],
     body,
     theme: 'grid',
+    tableWidth,
+    horizontalPageBreak: false,
     styles: {
       font: 'helvetica',
-      fontSize: 8,
-      cellPadding: { top: 2.6, right: 2.2, bottom: 2.6, left: 2.2 },
+      fontSize: 7.5,
+      cellPadding: 1.8,
       overflow: 'linebreak',
       valign: 'middle',
       textColor: GREEN.ink,
       lineColor: GREEN.line,
       lineWidth: 0.2,
-      minCellHeight: 8,
+      minCellHeight: 7,
     },
     headStyles: {
       fillColor: GREEN.deep,
       textColor: [255, 255, 255],
       fontStyle: 'bold',
-      fontSize: 8,
+      fontSize: 7.5,
       halign: 'left',
-      cellPadding: { top: 3.2, right: 2.2, bottom: 3.2, left: 2.2 },
+      cellPadding: 2,
     },
     alternateRowStyles: {
       fillColor: GREEN.soft,
@@ -226,15 +229,15 @@ export async function buildBookingsPdf(bookings: BookingPdfRow[]) {
       fillColor: [255, 255, 255],
     },
     columnStyles: {
-      0: { cellWidth: 10, halign: 'center' },
+      0: { cellWidth: 8, halign: 'center' },
       1: { cellWidth: 28, fontStyle: 'bold' },
-      2: { cellWidth: 40 },
-      3: { cellWidth: 28 },
+      2: { cellWidth: 44 },
+      3: { cellWidth: 30 },
       4: { cellWidth: 24 },
-      5: { cellWidth: 26, fontStyle: 'bold', textColor: GREEN.deep },
-      6: { cellWidth: 36, fontSize: 7 },
+      5: { cellWidth: 28, fontStyle: 'bold', textColor: GREEN.deep },
+      6: { cellWidth: 40, fontSize: 7 },
       7: { cellWidth: 20, halign: 'center', fontStyle: 'bold' },
-      8: { cellWidth: 30 },
+      8: { cellWidth: 'auto' },
     },
     margin: { left: marginX, right: marginX, bottom: 18 },
     didParseCell: (data) => {
